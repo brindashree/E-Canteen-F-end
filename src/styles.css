@@ -1,0 +1,71 @@
+.btn,
+.jumbotron,
+.nav :hover {
+	border-radius: 0px;
+}
+
+:root {
+	--navbg: #323031;
+	--logo: #ffc857;
+	--categorydivbg: #feebca;
+	--categorybtnbg: #084c61;
+	--card-detailsbg: #f5e4db;
+	--add-to-cartbtn: #38bdf8;
+	--bad-review-flag: #ef4444;
+	--avg-review-flag: #f59e0b;
+	--good-review-flag: #84cc16;
+	--primary: #111827;
+	--white: #ffffff;
+}
+
+body {
+	background: #ffffff;
+}
+
+.navdiv {
+	background-color: var(--navbg);
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+.nav-item {
+	border-radius: 8px;
+}
+.nav-item span {
+	border-radius: 8px;
+	overflow: hidden;
+}
+.navbar-brand {
+	font-size: 27px;
+	font-weight: bold;
+	color: var(--logo);
+}
+.navbar-brand:hover {
+	color: #ffffff;
+}
+.categories {
+	background-color: var(--categorydivbg);
+}
+.categories li {
+	background-color: var(--categorybtnbg);
+}
+.categorypanel {
+	height: 3rem;
+	/* overflow-x: scroll;
+	position: relative; */
+}
+.prodcard {
+	background-color: var(--card-detailsbg);
+	height: 450px;
+}
+.cardinfo {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	/* padding: 1rem; */
+}
+.addbtn {
+	background-color: var(--add-to-cartbtn);
+	border-radius: 7px;
+	position: absolute;
+	bottom: 5px;
+}
