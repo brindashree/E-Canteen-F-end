@@ -1,14 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import ImageHelper from "./helper/ImageHelper";
+import { Redirect } from "react-router-dom";
+import { addItemToCart, removeItemFromCart } from "./helper/carthelper";
 
-const Card = ({ product }) => {
-	console.log(product);
+const Card = ({
+	product,
+	addtoCart = true,
+	removeFromCart = false,
+	setReload = (f) => f,
+	reload = undefined,
+}) => {
+	const [redirect, setRedirect] = useState(false);
+
+	const addToCart = () => {
+		addItemToCart(product, () => setRedirect(true));
+	};
+
+	const getARedirect = (redirect) => {
+		if (redirect) {
+			return <Redirect to="/cart" />;
+		}
+	};
+
+	const showAddToCart = (addtoCart) => {
+		return (
+			addtoCart && (
+				<button onClick={addToCart} className="addbtn btn btn-block  mt-2 mb-2">
+					Add to Cart
+				</button>
+			)
+		);
+	};
+
 	return (
-		<div className="card prodcard ms-1 my-2 ">
+		<div className="card prodcard mx-1 my-3">
+			{getARedirect(redirect)}
+			<ImageHelper product={product} />
 			<div className="card-body">
-				<ImageHelper product={product} />
 				<div className="cardinfo">
-					<h5 className=" font-weight-normal">{product.name}</h5>
+					<h4 className=" fw-bold">
+						{product.name}
+						{product.inCart}
+					</h4>
 
 					<span className="btn btn-success rounded  btn-sm  fs-6">
 						<svg
@@ -24,13 +57,11 @@ const Card = ({ product }) => {
 						<span className="ps-3 fs-6">5.5</span>
 					</span>
 				</div>
-				<h6>Rs.{product.price}</h6>
-				<p className="text-muted">{product.description}</p>
+				<h5>Rs.{product.price}</h5>
+				<p>{product.description}</p>
 
 				<div className=" d-flex justify-content-center ">
-					<button onClick={() => {}} className="btn addbtn btn-block mt-2 mb-2">
-						Add to Cart
-					</button>
+					{showAddToCart(addtoCart)}
 				</div>
 			</div>
 		</div>

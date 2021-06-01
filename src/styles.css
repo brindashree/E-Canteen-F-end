@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;600&display=swap");
+
 .btn,
 .jumbotron,
 .nav :hover {
@@ -6,20 +8,23 @@
 
 :root {
 	--navbg: #323031;
-	--logo: #ffc857;
-	--categorydivbg: #feebca;
+	--logo: #ffd300;
+	--categorydivbg: #0e7490;
 	--categorybtnbg: #084c61;
-	--card-detailsbg: #f5e4db;
-	--add-to-cartbtn: #38bdf8;
+	--card-detailsbg: #e0f2fe;
+	--add-to-cartbtn: #f0f9ff;
 	--bad-review-flag: #ef4444;
 	--avg-review-flag: #f59e0b;
 	--good-review-flag: #84cc16;
 	--primary: #111827;
 	--white: #ffffff;
+	--footerbg: #084c61;
 }
 
 body {
-	background: #ffffff;
+	/* background: #ffffff; */
+	margin: 0;
+	font-family: "Nunito", sans-serif;
 }
 
 .navdiv {
@@ -47,25 +52,128 @@ body {
 }
 .categories li {
 	background-color: var(--categorybtnbg);
+	display: inline-flex;
+}
+.catlink {
+	color: var(--logo);
+	font-weight: 500;
+}
+.catlink:hover {
+	color: #ffffff;
 }
 .categorypanel {
 	height: 3rem;
-	/* overflow-x: scroll;
-	position: relative; */
 }
 .prodcard {
-	background-color: var(--card-detailsbg);
+	background-color: var(--add-to-cartbtn);
 	height: 450px;
+	border-radius: 3px;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+}
+.prodcard p {
+	font-weight: 700;
+}
+.prodcard h5 {
+	color: #fb923c;
+	font-size: 1.3rem;
+	font-weight: 700;
 }
 .cardinfo {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	/* padding: 1rem; */
+	padding: 0;
 }
 .addbtn {
-	background-color: var(--add-to-cartbtn);
+	background-color: var(--card-detailsbg);
 	border-radius: 7px;
 	position: absolute;
 	bottom: 5px;
+	border: 3px solid var(--footerbg);
+
+	color: var(--footerbg);
+	font-weight: 900;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 15px;
+	padding-right: 15px;
+	/* align-items: center;
+	margin: auto; */
+}
+.card-img {
+	object-fit: cover;
+	/* height: 250px; */
+	width: 100%;
+}
+.footer {
+	background-color: #084c61;
+	position: relative;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+
+.base {
+	background-color: #ffffff;
+}
+
+.incdecbtn {
+	border: 3px solid var(--footerbg);
+	font-weight: 500;
+	font-size: 1.2rem;
+}
+.cartcard {
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+	background-color: var(--add-to-cartbtn);
+}
+
+.footer h6 {
+	color: var(--white);
+}
+.footer svg:hover {
+	color: var(--logo);
+}
+.footer h4 {
+	color: var(--logo);
+}
+.footer h3 {
+	color: var(--logo);
+}
+
+.flexdiv {
+	display: flex;
+	justify-content: center;
+}
+.carttotal {
+	background-color: var(--categorydivbg);
+	padding: 2rem 5rem;
+	margin-top: 2rem;
+	color: #ffffff;
+	font-size: large;
+	border-radius: 1rem;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+.signin {
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+	/* background-color: #f1f5f9; */
+}
+
+.signinbtn {
+	color: white;
+	background-color: #0e7490;
+	font-size: 20px;
+	border-radius: 7px;
+	padding-top: "15px";
+	padding-bottom: "15px";
+	padding-left: "15px";
+	padding-right: "15px";
+}
+.signinbtn:hover {
+	color: var(--logo);
+}
+
+.signin > .card-header {
+	color: var(--logo);
+	background-color: var(--categorydivbg);
 }

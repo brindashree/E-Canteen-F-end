@@ -43,43 +43,56 @@ const Signup = () => {
 
 	const signUpForm = () => {
 		return (
-			<div className="row">
-				<div className="col-md-6 offset-sm-3 text-left">
-					<form>
-						<div className="form-group">
-							<label className="text-light">Name</label>
-							<input
-								className="form-control"
-								onChange={handleChange("name")}
-								type="text"
-								value={name}
-							/>
-						</div>
+			<div className="d-flex justify-content-center ">
+				<div className="card signin col-6 mt-5">
+					<div className="card-header">
+						<h2 className="text-center fw-bolder">Sign Up</h2>
+					</div>
+					<div className="row">
+						<div className="col-md-6 offset-sm-3 text-left">
+							<form>
+								<div className="input-group mb-3 mt-3">
+									<span className="input-group-text fw-bolder fs-5">Name</span>
+									<input
+										className="form-control fw-bolder fs-5"
+										onChange={handleChange("name")}
+										type="text"
+										value={name}
+									/>
+								</div>
 
-						<div className="form-group">
-							<label className="text-light">Email</label>
-							<input
-								className="form-control"
-								onChange={handleChange("email")}
-								value={email}
-								type="email"
-							/>
-						</div>
+								<div className="input-group mb-3 mt-3">
+									<span className="input-group-text fw-bolder fs-5">Email</span>
+									<input
+										className="form-control fw-bolder fs-5"
+										onChange={handleChange("email")}
+										value={email}
+										type="email"
+									/>
+								</div>
 
-						<div className="form-group">
-							<label className="text-light">Password</label>
-							<input
-								className="form-control"
-								onChange={handleChange("password")}
-								type="password"
-								value={password}
-							/>
+								<div className="input-group mb-3 mt-3">
+									<span className="input-group-text fw-bolder fs-5">
+										Password
+									</span>
+									<input
+										className="form-control fw-bolder fs-5"
+										onChange={handleChange("password")}
+										type="password"
+										value={password}
+									/>
+								</div>
+								<div className="flexdiv">
+									<button
+										onClick={onSubmit}
+										className="btn fw-bolder signinbtn mb-3"
+									>
+										Sign Up
+									</button>
+								</div>
+							</form>
 						</div>
-
-						<button onClick={onSubmit} className="btn btn-success btn-block">
-							Sign Up
-						</button>
-					</form>
+					</div>
 				</div>
 			</div>
 		);
@@ -117,11 +130,13 @@ const Signup = () => {
 	};
 
 	return (
-		<Base title="Sign up page" description="A page for user to sign up!">
-			{successMessage()}
-			{errorMessage()}
-			{signUpForm()}
-			<p className="text-white text-center">{JSON.stringify(values)}</p>
+		<Base>
+			<div className="container-fluid " style={{ minHeight: "65vh" }}>
+				{successMessage()}
+				{errorMessage()}
+				{signUpForm()}
+				<p className=" text-center">{JSON.stringify(values)}</p>
+			</div>
 		</Base>
 	);
 };

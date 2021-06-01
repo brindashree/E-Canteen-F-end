@@ -2,19 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import { createProduct, getCategories } from "./helper/adminapicall";
+import { getRbUser, updateRbUser } from "./helper/adminapicall";
 
-const AddProduct = () => {
+const UpdateUser = ({ match }) => {
 	const { user, token } = isAuthenticated();
 
 	const [values, setValues] = useState({
 		name: "",
-		description: "",
-		price: "",
+		email: "",
+		role: "",
 
-		photo: "",
-		categories: [],
-		category: "",
 		loading: false,
 		error: "",
 		createdProduct: "",
@@ -23,10 +20,8 @@ const AddProduct = () => {
 	});
 	const {
 		name,
-		description,
-		price,
-
-		categories,
+		email,
+		role,
 
 		error,
 		createdProduct,
@@ -34,16 +29,36 @@ const AddProduct = () => {
 		formData,
 	} = values;
 
-	const preload = () => {
-		getCategories().then((data) => {
+	const preload = (rbuserId) => {
+		getRbUser(rbuserId).then((data) => {
 			console.log(data);
 			if (data.error) {
 				setValues({ ...values, error: data.error });
 			} else {
-				setValues({ ...values, categories: data, formData: new FormData() });
+				setValues({
+					...values,
+					name: data.name,
+					email: data.email,
+					role: data.role,
+
+					formData: new FormData(),
+				});
 			}
 		});
 	};
+
+	// const preloadCategories = () => {
+	// 	return getCategories().then((data) => {
+	// 		if (data.error) {
+	// 			setValues({ ...values, error: data.error });
+	// 		} else {
+	// 			setValues({
+	// 				categories: data,
+	// 				formData: new FormData(),
+	// 			});
+	// 		}
+	// 	});
+	// };
 
 	const handleChange = (name) => (event) => {
 		const value = name === "photo" ? event.target.files[0] : event.target.value;
@@ -57,7 +72,7 @@ const AddProduct = () => {
 				className="alert alert-success mt-3"
 				style={{ display: createdProduct ? "" : "none" }}
 			>
-				<h4>{createdProduct} created successfully</h4>
+				<h4>{createdProduct} updated successfully</h4>
 			</div>
 		);
 	};
@@ -69,49 +84,39 @@ const AddProduct = () => {
 					className="alert alert-danger mt-3"
 					style={{ display: createdProduct ? "" : "none" }}
 				>
-					<h4>{createdProduct} error in creating product</h4>
+					<h4>{createdProduct} error in updating user</h4>
 				</div>
 			);
 		}
 	};
 	useEffect(() => {
-		preload();
+		preload(match.params.rbuserId);
 	}, []);
 
 	const onSubmit = (event) => {
 		event.preventDefault();
 		setValues({ ...values, error: "", loading: true });
-		createProduct(user._id, token, formData).then((data) => {
-			if (data.error) {
-				setValues({ ...values, error: data.error });
-			} else {
-				setValues({
-					...values,
-					name: "",
-					description: "",
-					price: "",
-					photo: "",
+		console.log(values);
+		updateRbUser(match.params.rbuserId, user._id, token, formData).then(
+			(data) => {
+				if (data.error) {
+					setValues({ ...values, error: data.error });
+				} else {
+					setValues({
+						...values,
+						name: "",
+						email: "",
+						role: "",
 
-					loading: false,
-					createdProduct: data.name,
-				});
+						loading: false,
+						createdProduct: data.name,
+					});
+				}
 			}
-		});
+		);
 	};
 	const createProductForm = () => (
 		<form>
-			<h3>Post photo</h3>
-			<div className="form-group m-2">
-				<label className="btn btn-block btn-success">
-					<input
-						onChange={handleChange("photo")}
-						type="file"
-						name="photo"
-						accept="image"
-						placeholder="choose a file"
-					/>
-				</label>
-			</div>
 			<div className="form-group m-2">
 				<input
 					onChange={handleChange("name")}
@@ -123,38 +128,21 @@ const AddProduct = () => {
 			</div>
 			<div className="form-group m-2">
 				<textarea
-					onChange={handleChange("description")}
+					onChange={handleChange("email")}
 					name="photo"
 					className="form-control"
-					placeholder="Description"
-					value={description}
+					placeholder="email"
+					value={email}
 				/>
 			</div>
 			<div className="form-group m-2">
 				<input
-					onChange={handleChange("price")}
+					onChange={handleChange("role")}
 					type="number"
 					className="form-control"
 					placeholder="Price"
-					value={price}
+					value={role}
 				/>
-			</div>
-			<div className="form-group m-2">
-				<select
-					onChange={handleChange("category")}
-					className="form-control"
-					placeholder="Category"
-				>
-					<option>Select</option>
-					{categories &&
-						categories.map((cate, index) => {
-							return (
-								<option key={index} value={cate._id}>
-									{cate.name}
-								</option>
-							);
-						})}
-				</select>
 			</div>
 
 			<button
@@ -162,16 +150,12 @@ const AddProduct = () => {
 				onClick={onSubmit}
 				className="btn btn-outline-success mb-3"
 			>
-				Create Product
+				Update User
 			</button>
 		</form>
 	);
 	return (
-		<Base
-			title="Add a product here!"
-			description="Welcome to product creation section"
-			className="container bg-info p-4"
-		>
+		<Base className="container bg-info p-4">
 			<Link to="/admin/dashboard" className="btn btn-md btn-dark mb-3 ">
 				Admin Home
 			</Link>
@@ -188,4 +172,4 @@ const AddProduct = () => {
 	);
 };
 
-export default AddProduct;
+export default UpdateUser;

@@ -1,10 +1,21 @@
 import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth/helper";
+import "../css/menu.css";
 
 const currentTab = (history, path) => {
 	if (history.location.pathname === path) {
-		return { backgroundColor: "#2ecc72", color: "#111827" };
+		return {
+			color: "#111827",
+			backgroundColor: "#0E7490",
+
+			borderRadius: "7px",
+			paddingTop: "10px",
+			paddingBottom: "10px",
+			paddingLeft: "15px",
+			paddingRight: "15px",
+			marginBottom: "10px",
+		};
 	} else {
 		return { color: "#111827" };
 	}
@@ -12,30 +23,20 @@ const currentTab = (history, path) => {
 
 const Menu = ({ history }) => {
 	return (
-		<nav className="navbar navbar-expand-lg navdiv">
-			<div className="container-fluid">
-				<Link className="navbar-brand" to="/">
-					LOGO
-				</Link>
-				<button
-					className="navbar-toggler"
-					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#navbarSupportedContent"
-					aria-controls="navbarSupportedContent"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-				>
-					<span className="navbar-toggler-icon"></span>
-				</button>
-				<div
-					className="collapse navbar-collapse d-flex justify-content-end"
-					id="navbarSupportedContent"
-				>
-					<ul className="navbar-nav ">
-						<li className="nav-item mx-2 bg-white text-black">
+		<div>
+			<div>
+				<header className="header">
+					<Link className="logo ps-5 fw-bolder" to="/">
+						RelishBay
+					</Link>
+					<input className="menu-btn" type="checkbox" id="menu-btn" />
+					<label className="menu-icon" htmlFor="menu-btn">
+						<span className="navicon"></span>
+					</label>
+					<ul className="menu">
+						<li>
 							<Link
-								className="nav-link active"
+								className="link link-theme link-arrow text-white"
 								aria-current="page"
 								to="/"
 								style={currentTab(history, "/")}
@@ -43,32 +44,34 @@ const Menu = ({ history }) => {
 								Home
 							</Link>
 						</li>
-						<li className="nav-item mx-2 bg-white text-black">
-							<Link
-								style={currentTab(history, "/cart")}
-								className="nav-link"
-								to="/cart"
-							>
-								Cart
-							</Link>
-						</li>
 
 						{isAuthenticated() && isAuthenticated().user.role === 0 && (
-							<li className="nav-item mx-2 bg-white text-black">
-								<Link
-									style={currentTab(history, "/user/dashboard")}
-									className="nav-link"
-									to="/user/dashboard"
-								>
-									U.Dashboard
-								</Link>
-							</li>
+							<Fragment>
+								<li>
+									<Link
+										style={currentTab(history, "/cart")}
+										className="link link-theme link-arrow text-white "
+										to="/cart"
+									>
+										Cart
+									</Link>
+								</li>
+								<li>
+									<Link
+										style={currentTab(history, "/user/dashboard")}
+										className="link link-theme link-arrow text-white"
+										to="/user/dashboard"
+									>
+										U.Dashboard
+									</Link>
+								</li>
+							</Fragment>
 						)}
 						{isAuthenticated() && isAuthenticated().user.role === 2 && (
-							<li className="nav-item mx-2 bg-white text-black">
+							<li>
 								<Link
 									style={currentTab(history, "/admin/dashboard")}
-									className="nav-link"
+									className="link link-theme link-arrow text-white"
 									to="/admin/dashboard"
 								>
 									A.Dashboard
@@ -78,19 +81,19 @@ const Menu = ({ history }) => {
 
 						{!isAuthenticated() && (
 							<Fragment>
-								<li className="nav-item mx-2 bg-white text-black">
+								<li>
 									<Link
 										style={currentTab(history, "/signin")}
-										className="nav-link"
+										className="link link-theme link-arrow text-white"
 										to="/signin"
 									>
 										Sign In
 									</Link>
 								</li>
-								<li className="nav-item mx-2 bg-white text-black">
+								<li>
 									<Link
 										style={currentTab(history, "/signup")}
-										className="nav-link"
+										className="link link-theme link-arrow text-white"
 										to="/signup"
 									>
 										Signup
@@ -99,10 +102,17 @@ const Menu = ({ history }) => {
 							</Fragment>
 						)}
 						{isAuthenticated() && (
-							<li className="nav-item mx-2 bg-white text-black ">
+							<li>
 								<span
-									className="nav-link text-black"
-									style={{ backgroundColor: "#ffc857", color: "#111827" }}
+									className="link link-theme link-arrow text-white"
+									style={{
+										backgroundColor: "#ffc857",
+										color: "#ffffff",
+										padding: "7px",
+										borderRadius: "7px",
+										marginTop: "10px",
+										marginLeft: "15px",
+									}}
 									onClick={() => {
 										signout(() => {
 											history.push("/");
@@ -114,9 +124,9 @@ const Menu = ({ history }) => {
 							</li>
 						)}
 					</ul>
-				</div>
+				</header>
 			</div>
-		</nav>
+		</div>
 	);
 };
 
