@@ -6,7 +6,7 @@ import "../css/menu.css";
 const currentTab = (history, path) => {
 	if (history.location.pathname === path) {
 		return {
-			color: "#111827",
+			color: "#ffffff",
 			backgroundColor: "#0E7490",
 
 			borderRadius: "7px",
@@ -17,7 +17,7 @@ const currentTab = (history, path) => {
 			marginBottom: "10px",
 		};
 	} else {
-		return { color: "#111827" };
+		return { color: "#084c61" };
 	}
 };
 
@@ -36,7 +36,7 @@ const Menu = ({ history }) => {
 					<ul className="menu">
 						<li>
 							<Link
-								className="link link-theme link-arrow text-white"
+								className="link link-theme link-arrow "
 								aria-current="page"
 								to="/"
 								style={currentTab(history, "/")}
@@ -45,33 +45,35 @@ const Menu = ({ history }) => {
 							</Link>
 						</li>
 
-						{isAuthenticated() && isAuthenticated().user.role === 0 && (
-							<Fragment>
-								<li>
-									<Link
-										style={currentTab(history, "/cart")}
-										className="link link-theme link-arrow text-white "
-										to="/cart"
-									>
-										Cart
-									</Link>
-								</li>
-								<li>
-									<Link
-										style={currentTab(history, "/user/dashboard")}
-										className="link link-theme link-arrow text-white"
-										to="/user/dashboard"
-									>
-										U.Dashboard
-									</Link>
-								</li>
-							</Fragment>
-						)}
+						{isAuthenticated() &&
+							(isAuthenticated().user.role === 0 ||
+								isAuthenticated().user.role === 1) && (
+								<Fragment>
+									<li>
+										<Link
+											style={currentTab(history, "/cart")}
+											className="link link-theme link-arrow "
+											to="/cart"
+										>
+											Cart
+										</Link>
+									</li>
+									<li>
+										<Link
+											style={currentTab(history, "/user/dashboard")}
+											className="link link-theme link-arrow "
+											to="/user/dashboard"
+										>
+											U.Dashboard
+										</Link>
+									</li>
+								</Fragment>
+							)}
 						{isAuthenticated() && isAuthenticated().user.role === 2 && (
 							<li>
 								<Link
 									style={currentTab(history, "/admin/dashboard")}
-									className="link link-theme link-arrow text-white"
+									className="link link-theme link-arrow"
 									to="/admin/dashboard"
 								>
 									A.Dashboard
@@ -84,7 +86,7 @@ const Menu = ({ history }) => {
 								<li>
 									<Link
 										style={currentTab(history, "/signin")}
-										className="link link-theme link-arrow text-white"
+										className="link link-theme link-arrow"
 										to="/signin"
 									>
 										Sign In
@@ -93,7 +95,7 @@ const Menu = ({ history }) => {
 								<li>
 									<Link
 										style={currentTab(history, "/signup")}
-										className="link link-theme link-arrow text-white"
+										className="link link-theme link-arrow"
 										to="/signup"
 									>
 										Signup

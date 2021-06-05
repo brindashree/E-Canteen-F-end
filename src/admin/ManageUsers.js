@@ -32,16 +32,31 @@ const ManageUsers = () => {
 			}
 		});
 	};
+	const goBack = () => (
+		<div className="mt-5">
+			<Link className="btn btn-sm  mb-3" to="/admin/dashboard">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="32"
+					height="32"
+					fill="black"
+					className="bi bi-arrow-left-circle-fill"
+					viewBox="0 0 16 16"
+				>
+					<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+				</svg>
+			</Link>
+		</div>
+	);
 
 	return (
 		<Base>
-			<div className="container-fluid" style={{ minHeight: "65vh" }}>
-				<h2 className="mb-4 d-flex justify-content-center fw-bold">
-					All Users:
-				</h2>
+			<div className="container-fluid col-10" style={{ minHeight: "65vh" }}>
+				{goBack()}
 
 				<div className="row d-flex justify-content-center">
-					<div className=" card col-xl-6 col-12 mb-5">
+					<div className=" card adminmanagecard col-10 mb-5">
+						<h2 className="text-center my-3 fw-bold">All Users</h2>
 						<div className="card-body">
 							<ul className="list-group list-group-flush">
 								{rbusers.map((rbuser, index) => {

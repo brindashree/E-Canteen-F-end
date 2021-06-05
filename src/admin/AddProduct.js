@@ -98,90 +98,105 @@ const AddProduct = () => {
 			}
 		});
 	};
-	const createProductForm = () => (
-		<form>
-			<h3>Post photo</h3>
-			<div className="form-group m-2">
-				<label className="btn btn-block btn-success">
-					<input
-						onChange={handleChange("photo")}
-						type="file"
-						name="photo"
-						accept="image"
-						placeholder="choose a file"
-					/>
-				</label>
-			</div>
-			<div className="form-group m-2">
-				<input
-					onChange={handleChange("name")}
-					name="photo"
-					className="form-control"
-					placeholder="Name"
-					value={name}
-				/>
-			</div>
-			<div className="form-group m-2">
-				<textarea
-					onChange={handleChange("description")}
-					name="photo"
-					className="form-control"
-					placeholder="Description"
-					value={description}
-				/>
-			</div>
-			<div className="form-group m-2">
-				<input
-					onChange={handleChange("price")}
-					type="number"
-					className="form-control"
-					placeholder="Price"
-					value={price}
-				/>
-			</div>
-			<div className="form-group m-2">
-				<select
-					onChange={handleChange("category")}
-					className="form-control"
-					placeholder="Category"
+	const goBack = () => (
+		<div className="mt-5">
+			<Link className="btn btn-sm  mb-3" to="/admin/dashboard">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="32"
+					height="32"
+					fill="black"
+					className="bi bi-arrow-left-circle-fill"
+					viewBox="0 0 16 16"
 				>
-					<option>Select</option>
-					{categories &&
-						categories.map((cate, index) => {
-							return (
-								<option key={index} value={cate._id}>
-									{cate.name}
-								</option>
-							);
-						})}
-				</select>
-			</div>
-
-			<button
-				type="submit"
-				onClick={onSubmit}
-				className="btn btn-outline-success mb-3"
-			>
-				Create Product
-			</button>
-		</form>
+					<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+				</svg>
+			</Link>
+		</div>
+	);
+	const createProductForm = () => (
+		<div className="adminaddcard px-4 py-4">
+			<form>
+				<h3 className="fw-bold text-center">Add Product</h3>
+				<div className="form-group m-2">
+					<label className="btn btn-block">
+						<input
+							onChange={handleChange("photo")}
+							type="file"
+							name="photo"
+							accept="image"
+							placeholder="choose a file"
+						/>
+					</label>
+				</div>
+				<div className="form-group m-2">
+					<input
+						onChange={handleChange("name")}
+						name="photo"
+						className="form-control"
+						placeholder="Name"
+						value={name}
+					/>
+				</div>
+				<div className="form-group m-2">
+					<textarea
+						onChange={handleChange("description")}
+						name="photo"
+						className="form-control"
+						placeholder="Description"
+						value={description}
+					/>
+				</div>
+				<div className="form-group m-2">
+					<input
+						onChange={handleChange("price")}
+						type="number"
+						className="form-control"
+						placeholder="Price"
+						value={price}
+					/>
+				</div>
+				<div className="form-group m-2">
+					<select
+						onChange={handleChange("category")}
+						className="form-control"
+						placeholder="Category"
+					>
+						<option>Select</option>
+						{categories &&
+							categories.map((cate, index) => {
+								return (
+									<option key={index} value={cate._id}>
+										{cate.name}
+									</option>
+								);
+							})}
+					</select>
+				</div>
+				<div className="flexdiv">
+					<button
+						type="submit"
+						onClick={onSubmit}
+						className="btn signinbtn mb-3"
+					>
+						Create Product
+					</button>
+				</div>
+			</form>
+		</div>
 	);
 	return (
-		<Base
-			title="Add a product here!"
-			description="Welcome to product creation section"
-			className="container bg-info p-4"
-		>
-			<Link to="/admin/dashboard" className="btn btn-md btn-dark mb-3 ">
-				Admin Home
-			</Link>
-			<div className="row bg-dark text-white rounded">
-				<div className="col-md-8 offset-md-2">
-					<h1>
-						{successMessage()}
-						{errorMessage()}
-						{createProductForm()}
-					</h1>
+		<Base>
+			<div className="container-fluid col-10" style={{ minHeight: "65vh" }}>
+				{goBack()}
+				<div className="row">
+					<div className="col-md-8 offset-md-2">
+						<h1>
+							{successMessage()}
+							{errorMessage()}
+							{createProductForm()}
+						</h1>
+					</div>
 				</div>
 			</div>
 		</Base>

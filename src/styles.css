@@ -177,3 +177,30 @@ body {
 	color: var(--logo);
 	background-color: var(--categorydivbg);
 }
+
+.adminlist li {
+	box-shadow: 3px 3px 5px rgba(47, 111, 206, 0.4);
+}
+.adminlistcolor {
+	color: var(--categorybtnbg);
+	font-weight: 800;
+}
+.adminlist h5 {
+	color: brown;
+	font-weight: bold;
+}
+.adminaddcard {
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+	background-color: #f0f1a3;
+}
+.adminaddcard h4 {
+	font-weight: 600;
+}
+.adminmanagecard {
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+}
+.adminmanagecard li {
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+	background-color: #f0f1a3;
+	margin: 5px 5px;
+}
