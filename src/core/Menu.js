@@ -17,7 +17,7 @@ const currentTab = (history, path) => {
 			marginBottom: "10px",
 		};
 	} else {
-		return { color: "#084c61" };
+		return { color: "#084c61", fontWeight: "bold" };
 	}
 };
 

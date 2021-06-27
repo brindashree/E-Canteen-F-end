@@ -22,15 +22,15 @@ export default function Home() {
 	return (
 		<Base>
 			<CategoryPanel />
-			<div className="row">
-				{products.length > 0 &&
-					products.map((product) => {
-						return (
-							<div className="col-md-3 col-md-push-4" key={product._id}>
-								<Card product={product} />
-							</div>
-						);
-					})}
+			<div style={{ backgroundColor: " #fffbeb" }}>
+				<section className="menu section">
+					<div className="section-center">
+						{products.length > 0 &&
+							products.map((product) => {
+								return <Card product={product} key={product._id} />;
+							})}
+					</div>
+				</section>
 			</div>
 		</Base>
 	);

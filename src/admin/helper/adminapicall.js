@@ -173,6 +173,23 @@ export const getUsers = (userId, token) => {
 		.catch((err) => console.log(err));
 };
 
+//get orders of specific user
+
+//all orders at admin end
+export const getAllOrders = (userId, token) => {
+	return fetch(`${API}order/admin/all/${userId}`, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+	})
+		.then((response) => {
+			return response.json();
+		})
+		.catch((err) => console.log(err));
+};
+
 export const getRbUser = (rbuserId) => {
 	return fetch(`${API}user/${rbuserId}`, {
 		method: "GET",
@@ -192,6 +209,34 @@ export const updateRbUser = (rbuserId, userId, token, ruser) => {
 			Authorization: `Bearer ${token}`,
 		},
 		body: ruser,
+	})
+		.then((response) => {
+			return response.json();
+		})
+		.catch((err) => console.log(err));
+};
+export const updateConfirmOrder = (orderId, userId, token) => {
+	//"/order/:orderId/status/confirm/:userId"
+	return fetch(`${API}/order/${orderId}/status/confirm/${userId}`, {
+		method: "PUT",
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+	})
+		.then((response) => {
+			return response.json();
+		})
+		.catch((err) => console.log(err));
+};
+
+export const updateDeclineOrder = (orderId, userId, token) => {
+	return fetch(`${API}/order/${orderId}/status/decline/${userId}`, {
+		method: "PUT",
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${token}`,
+		},
 	})
 		.then((response) => {
 			return response.json();

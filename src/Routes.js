@@ -17,6 +17,7 @@ import UpdateCategory from "./admin/UpdateCategory";
 import Cart from "./core/Cart";
 import ManageUsers from "./admin/ManageUsers";
 import UpdateUser from "./admin/UpdateUser";
+import ManageOrders from "./admin/ManageOrders";
 
 const Routes = () => {
 	return (
@@ -34,6 +35,7 @@ const Routes = () => {
 				/>
 				<PrivateRoute path="/user/dashboard" exact component={UserDashBoard} />
 				<PrivateRoute path="/cart" exact component={Cart} />
+
 				<AdminRoute path="/admin/dashboard" exact component={AdminDashBoard} />
 				<AdminRoute
 					path="/admin/create/category"
@@ -58,6 +60,7 @@ const Routes = () => {
 					component={UpdateCategory}
 				/>
 				<AdminRoute path="/admin/users" exact component={ManageUsers} />
+				<AdminRoute path="/admin/orders" exact component={ManageOrders} />
 
 				<AdminRoute
 					path="/admin/user/update/:rbuserId"

@@ -3,37 +3,63 @@ import "../styles.css";
 
 import Base from "./Base";
 
-import {
-	findAndUpdate,
-	loadCart,
-	removeItemFromCart,
-} from "./helper/carthelper";
-import CardForCart from "./CardForCart";
-import { addItemToCart } from "./helper/carthelper";
+import { cartEmpty, loadCart, removeItemFromCart } from "./helper/carthelper";
 
-// import Paymentb from "./Paymentb";
+import StripeCheckout from "react-stripe-checkout";
+
+import { API } from "../backend";
+import { createOrder } from "./helper/orderhelper";
+import { isAuthenticated } from "../auth/helper";
+import { Redirect } from "react-router-dom";
 
 const Cart = () => {
 	const [products, setProducts] = useState(loadCart());
+	const useremail = isAuthenticated().user.email;
+	const tokenId = isAuthenticated() && isAuthenticated().token;
+	const userId = isAuthenticated() && isAuthenticated().user._id;
+	const [redirect, setRedirect] = useState(false);
 
-	// useEffect(() => {
-	// 	setProducts(loadCart());
-	// }, [products]);
-	// const addToCart = (product, i) => {
-	// 	addItemToCart(product);
-	// 	setProducts((prevState) =>
-	// 		prevState.map((item, o) => {
-	// 			if (i === o) {
-	// 				return {
-	// 					...item,
-	// 					inCart: true,
-	// 					quantity: item.counterVal,
-	// 				};
-	// 			}
-	// 			return item;
-	// 		})
-	// 	);
-	// };
+	const makepayment = (token) => {
+		const price = cartPriceTotal;
+
+		const body = {
+			token,
+			products,
+			price,
+		};
+		const headers = {
+			"Content-Type": "application/json",
+		};
+		return fetch(`${API}stripepayment`, {
+			method: "POST",
+			headers,
+			body: JSON.stringify(body),
+		})
+			.then((response) => {
+				console.log(response);
+				const { status } = response;
+				console.log(status);
+				const orderData = {
+					products: products,
+					transaction_id: tokenId,
+					amount: price,
+					address: address,
+					deliveryTime: time,
+				};
+				createOrder(userId, tokenId, orderData);
+				cartEmpty(() => {
+					setRedirect(true);
+					console.log("cart empty");
+				});
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const getARedirect = (redirect) => {
+		if (redirect) {
+			return <Redirect to="/" />;
+		}
+	};
 	const increaseQuantity = (prodId) => {
 		setProducts((prevCart) =>
 			prevCart.map((item) => {
@@ -93,28 +119,23 @@ const Cart = () => {
 
 		setProducts(removeItemFromCart(prodId));
 	};
+
 	const cartCountTotal = products.reduce((acc, item) => acc + item.quantity, 0);
 	const cartPriceTotal = products.reduce(
 		(acc, item) => acc + item.price * item.quantity,
 		0
 	);
-	const cartTotals = () =>
-		cartCountTotal === 0 ? (
-			<div className="carttotal">Cart is empty</div>
-		) : (
-			<div className="carttotal">
-				<p className="fw-bolder">You have {cartCountTotal} items in cart </p>
-				<p className="fw-bolder fs-4">
-					Total Price:{" "}
-					<span style={{ color: "#ffc857" }}>
-						Rs{" "}
-						{Number.isInteger(cartPriceTotal)
-							? cartPriceTotal
-							: cartPriceTotal.toFixed(2)}
-					</span>
-				</p>
+	const cartTotals = () => {
+		return (
+			<div className="row">
+				<div className="col-md-6 offset-sm-3 text-left">
+					<div className="alert alert-danger fw-bold text-center fs-4">
+						Cart Empty
+					</div>
+				</div>
 			</div>
 		);
+	};
 	const loadAllProducts = (products) => {
 		return (
 			<div className="row justify-content-center">
@@ -202,19 +223,157 @@ const Cart = () => {
 			</div>
 		);
 	};
-	const loadCheckout = () => {
+
+	//-----------
+	const [values, setValues] = useState({
+		phone: "",
+		error: "",
+		time: " ",
+		loading: false,
+		didRedirect: false,
+		address: " ",
+	});
+	const { phone, error, loading, didRedirect, time, address } = values;
+	const handleChange = (name) => (event) => {
+		//...values = loads all the existing values
+		setValues({ ...values, error: false, [name]: event.target.value });
+	};
+	const loadingMessage = () => {
 		return (
-			<div>
-				<h2>This section for checkout</h2>
+			loading && (
+				<div className="alert alert-info">
+					<h2>Loading.....</h2>
+				</div>
+			)
+		);
+	};
+
+	const errorMessage = () => {
+		return (
+			<div className="row">
+				<div className="col-md-6 offset-sm-3 text-left">
+					<div
+						className="alert alert-danger"
+						style={{ display: error ? "" : "none" }}
+					>
+						{error}
+					</div>
+				</div>
 			</div>
 		);
 	};
 
+	const CheckoutForm = () => {
+		return (
+			<div className="d-flex justify-content-center">
+				<div className="signin card col-12 col-xl-6 mt-5">
+					<div className="card-header">
+						<h2 className="text-center fw-bolder">Checkout</h2>
+					</div>
+					<div className="d-flex justify-content-around mt-3 mb-3 ">
+						<h5 className="fw-bolder">Total Items : {cartCountTotal} </h5>
+						<h5 className="fw-bolder">Total Price : {cartPriceTotal}</h5>
+					</div>
+					<div className="flexdiv">
+						<div className="col-4 mb-3">
+							<select
+								className="form-select btn btn-secondary"
+								aria-label="Default select example"
+							>
+								<option value="0">Cart Items</option>
+								{products &&
+									products.map((item, i) => {
+										return (
+											<option value={i} key={i}>
+												{item.name}
+											</option>
+										);
+									})}
+							</select>
+						</div>
+					</div>
+
+					<div className="row">
+						<div className="col-md-6 offset-sm-3 text-left px-2">
+							<form>
+								<div className="input-group mb-3">
+									<span className="input-group-text fw-bold fs-6">Email</span>
+									<input
+										value={useremail}
+										className="form-control fw-bold fs-6"
+										type="email"
+										disabled
+									/>
+								</div>
+
+								<div className="input-group mb-3">
+									<span className="input-group-text fw-bold fs-6">Phone</span>
+									<input
+										value={phone}
+										onChange={handleChange("phone")}
+										className="form-control fw-bold fs-6"
+										type="number"
+									/>
+								</div>
+								<div className="input-group mb-3">
+									<span className="input-group-text fw-bold fs-6">Timings</span>
+									<input
+										value={time}
+										onChange={handleChange("time")}
+										className="form-control fw-bold fs-6"
+										type="time"
+									/>
+								</div>
+								{isAuthenticated() && isAuthenticated().user.role === 1 && (
+									<div className="input-group mb-3">
+										<span className="input-group-text fw-bold fs-6">
+											Address
+										</span>
+										<textarea
+											value={address}
+											onChange={handleChange("address")}
+											className="form-control fw-bold fs-6"
+											type="text"
+										/>
+									</div>
+								)}
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	///-------------
+
 	return (
 		<Base>
-			<div style={{ minHeight: "65vh" }}>
+			{getARedirect(redirect)}
+			<div style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}>
 				{products && products.length > 0 ? loadAllProducts(products) : null}
-				<div className="flexdiv">{cartTotals()}</div>
+				{cartCountTotal === 0 && cartTotals()}
+				<div
+					className="container-fluid"
+					style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
+				>
+					{loadingMessage()}
+					{errorMessage()}
+					{CheckoutForm()}
+				</div>
+				<div className="flexdiv">
+					<StripeCheckout
+						stripeKey="pk_test_51J0l2NSEF0BipjQa7iPcjblAs7zlU63MPXOm5t316PGUIDHGO82v6szbvYFw68Faa4kEkG07m8iu5ofDQEFOVvDE00WrEDw86C"
+						token={makepayment}
+						name="Relish Bay"
+						currency="INR"
+						amount={cartPriceTotal * 100}
+					>
+						<button className="btn fw-bolder signinbtn mb-3">
+							Pay with stripe
+						</button>
+					</StripeCheckout>
+				</div>
 			</div>
 		</Base>
 	);

@@ -19,6 +19,13 @@
 	--primary: #111827;
 	--white: #ffffff;
 	--footerbg: #084c61;
+	--transition: all 0.3s linear;
+	--spacing: 0.1rem;
+	--radius: 0.25rem;
+	--light-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	--dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	--max-width: 1170px;
+	--fixed-width: 620px;
 }
 
 body {
@@ -87,16 +94,15 @@ body {
 .addbtn {
 	background-color: var(--card-detailsbg);
 	border-radius: 7px;
-	position: absolute;
-	bottom: 5px;
+
 	border: 3px solid var(--footerbg);
 
 	color: var(--footerbg);
 	font-weight: 900;
-	padding-top: 8px;
-	padding-bottom: 8px;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
 	/* align-items: center;
 	margin: auto; */
 }
@@ -203,4 +209,102 @@ body {
 	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
 	background-color: #f0f1a3;
 	margin: 5px 5px;
+}
+
+/* section */
+.section {
+	width: 90vw;
+	margin: 0 auto;
+	max-width: var(--max-width);
+}
+
+@media screen and (min-width: 992px) {
+	.section {
+		width: 95vw;
+	}
+}
+
+/*
+=============== 
+Menu
+===============
+*/
+
+.menu {
+	padding: 5rem 0;
+}
+
+/* menu */
+
+.section-center {
+	width: 90vw;
+	margin: 0 auto;
+	max-width: 1170px;
+	display: grid;
+	gap: 3rem 2rem;
+	justify-items: center;
+}
+.menu-item {
+	display: grid;
+	gap: 1rem 2rem;
+	max-width: 25rem;
+
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+	padding: 1rem;
+	background-color: var(--white);
+}
+.photo {
+	object-fit: cover;
+	height: 200px;
+	width: 100%;
+	border: 0.15rem solid var(--logo);
+	border-radius: var(--radius);
+	display: block;
+}
+
+.item-info header {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 0.15rem solid var(--categorydivbg);
+}
+.item-info h4 {
+	margin-bottom: 0.5rem;
+}
+.price {
+	color: var(--categorybtnbg);
+	font-weight: bold;
+}
+.item-text {
+	margin-bottom: 0;
+	padding-top: 1rem;
+	font-weight: bold;
+	color: #6b7280;
+}
+.item-info .name {
+	color: var(--categorybtnbg);
+	font-weight: bold;
+}
+
+@media screen and (min-width: 768px) {
+	.menu-item {
+		grid-template-columns: 225px 1fr;
+		gap: 0 1.25rem;
+		max-width: 40rem;
+	}
+	.photo {
+		height: 175px;
+	}
+}
+@media screen and (min-width: 1200px) {
+	.section-center {
+		width: 95vw;
+		grid-template-columns: 1fr 1fr;
+	}
+	.menu-item {
+		min-width: 37rem;
+		border-radius: 1rem;
+	}
+	.photo {
+		height: 200px;
+	}
 }
