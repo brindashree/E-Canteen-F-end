@@ -28,6 +28,18 @@ const ManageOrders = () => {
 			}
 		});
 	};
+
+	const setcolor = (str) => {
+		if (str == "Declined") {
+			scolor = "red";
+		} else if (str == "Processing") {
+			scolor = "#FBBF24";
+		} else if (str == "Confirmed") {
+			scolor = "#2DD4BF";
+		} else if (str == "Cancelled") {
+			scolor = "#F87171";
+		}
+	};
 	const confirmOrder = (orderId) => {
 		updateConfirmOrder(orderId, user._id, token).then((data) => {
 			if (data.error) {
@@ -46,6 +58,7 @@ const ManageOrders = () => {
 			}
 		});
 	};
+	var c = 0;
 
 	useEffect(() => {
 		preload();
@@ -81,11 +94,11 @@ const ManageOrders = () => {
 											// or = order.status;
 
 											return (
-												<span key={index}>
-													{nd === tdate ? (
+												<>
+													{nd === tdate && order.status !== "Cancelled" ? (
 														<tr className=" row  " key={index}>
 															<td className="col-1 text-left align-middle">
-																{index + 1}
+																{(c = c + 1)}
 															</td>
 															<td className="col-1">
 																<p className=" text-left align-middle">{nd}</p>
@@ -108,14 +121,7 @@ const ManageOrders = () => {
 															</td>
 
 															<td className="col-1 text-white">
-																{(order.status == "Cancelled" ||
-																	order.status == "Declined") &&
-																	(scolor = "red")}
-																{order.status == "Processing" &&
-																	(scolor = "#FBBF24")}
-
-																{order.status == "Confirmed" &&
-																	(scolor = "#2DD4BF")}
+																{setcolor(order.status)}
 																<p
 																	className=" text-left align-middle "
 																	style={{ backgroundColor: `${scolor}` }}
@@ -167,7 +173,7 @@ const ManageOrders = () => {
 															</td>
 														</tr>
 													) : null}
-												</span>
+												</>
 											);
 										})}
 								</tbody>

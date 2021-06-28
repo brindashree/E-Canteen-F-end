@@ -44,6 +44,18 @@ const CancelledOrders = () => {
 			}
 		});
 	};
+	var scolor;
+	const setcolor = (str) => {
+		if (str == "Declined") {
+			scolor = "red";
+		} else if (str == "Processing") {
+			scolor = "#FBBF24";
+		} else if (str == "Confirmed") {
+			scolor = "#2DD4BF";
+		} else if (str == "Cancelled") {
+			scolor = "#F87171";
+		}
+	};
 
 	useEffect(() => {
 		preload();
@@ -77,7 +89,7 @@ const CancelledOrders = () => {
 											console.log(nd);
 
 											return (
-												<span key={index}>
+												<>
 													{nd === tdate && order.status === "Cancelled" ? (
 														<tr className=" row  " key={index}>
 															<td className="col-1 text-left align-middle">
@@ -103,14 +115,18 @@ const CancelledOrders = () => {
 																<span>{order.deliveryTime}</span>
 															</td>
 
-															<td className="col-3">
-																<p className=" text-left align-middle">
+															<td className="col-3 d-flex justify-content-around text-white fw-bold">
+																{setcolor(order.status)}
+																<p
+																	className=" p-2 rounded-2"
+																	style={{ backgroundColor: `${scolor}` }}
+																>
 																	{order.status}
 																</p>
 															</td>
 														</tr>
 													) : null}
-												</span>
+												</>
 											);
 										})}
 								</tbody>

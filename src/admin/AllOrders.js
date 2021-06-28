@@ -26,6 +26,18 @@ const AllOrders = () => {
 			}
 		});
 	};
+	var scolor;
+	const setcolor = (str) => {
+		if (str == "Declined") {
+			scolor = "red";
+		} else if (str == "Processing") {
+			scolor = "#FBBF24";
+		} else if (str == "Confirmed") {
+			scolor = "#2DD4BF";
+		} else if (str == "Cancelled") {
+			scolor = "#F87171";
+		}
+	};
 
 	useEffect(() => {
 		preload();
@@ -56,7 +68,6 @@ const AllOrders = () => {
 										orders.reverse().map((order, index) => {
 											var d = order.createdAt.slice(0, 10);
 											var nd = d.split("-").reverse().join("-");
-											console.log(nd);
 
 											return (
 												<tr className=" row  " key={index}>
@@ -83,8 +94,12 @@ const AllOrders = () => {
 														<span>{order.deliveryTime}</span>
 													</td>
 
-													<td className="col-3">
-														<p className=" text-left align-middle">
+													<td className="col-3 d-flex justify-content-around text-white fw-bold">
+														{setcolor(order.status)}
+														<p
+															className=" p-2 rounded-2"
+															style={{ backgroundColor: `${scolor}` }}
+														>
 															{order.status}
 														</p>
 													</td>
