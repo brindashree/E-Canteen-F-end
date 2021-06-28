@@ -69,6 +69,22 @@ const AdminDashBoard = () => {
 									Manage Orders
 								</Link>
 							</li>
+							<li className="list-group-item mb-2">
+								<Link
+									to="/admin/orders/all"
+									className="nav-link adminlistcolor"
+								>
+									All Orders
+								</Link>
+							</li>
+							<li className="list-group-item mb-2">
+								<Link
+									to="/admin/orders/cancelled"
+									className="nav-link adminlistcolor"
+								>
+									Cancelled Orders
+								</Link>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -92,7 +108,10 @@ const AdminDashBoard = () => {
 	};
 	return (
 		<Base>
-			<div className="row" style={{ minHeight: "65vh" }}>
+			<div
+				className="row"
+				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
+			>
 				<div className="col-xl-9 col-12 ">{adminLeftSide()}</div>
 				<div className="col-xl-3 col-12">{adminRightSide()}</div>
 			</div>

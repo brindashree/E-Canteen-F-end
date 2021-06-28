@@ -18,6 +18,8 @@ import Cart from "./core/Cart";
 import ManageUsers from "./admin/ManageUsers";
 import UpdateUser from "./admin/UpdateUser";
 import ManageOrders from "./admin/ManageOrders";
+import AllOrders from "./admin/AllOrders";
+import CancelledOrders from "./admin/CancelledOrders";
 
 const Routes = () => {
 	return (
@@ -61,6 +63,13 @@ const Routes = () => {
 				/>
 				<AdminRoute path="/admin/users" exact component={ManageUsers} />
 				<AdminRoute path="/admin/orders" exact component={ManageOrders} />
+
+				<AdminRoute path="/admin/orders/all" exact component={AllOrders} />
+				<AdminRoute
+					path="/admin/orders/cancelled"
+					exact
+					component={CancelledOrders}
+				/>
 
 				<AdminRoute
 					path="/admin/user/update/:rbuserId"

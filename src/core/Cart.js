@@ -39,6 +39,7 @@ const Cart = () => {
 				console.log(response);
 				const { status } = response;
 				console.log(status);
+
 				const orderData = {
 					products: products,
 					transaction_id: tokenId,
@@ -46,7 +47,9 @@ const Cart = () => {
 					address: address,
 					deliveryTime: time,
 				};
+
 				createOrder(userId, tokenId, orderData);
+
 				cartEmpty(() => {
 					setRedirect(true);
 					console.log("cart empty");
@@ -63,7 +66,6 @@ const Cart = () => {
 	const increaseQuantity = (prodId) => {
 		setProducts((prevCart) =>
 			prevCart.map((item) => {
-				console.log(item.inCart);
 				if (prodId === item._id && item.inCart) {
 					if (item.quantity > 9) {
 						return item;

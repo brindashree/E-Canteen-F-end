@@ -8,16 +8,14 @@ import {
 	updateDeclineOrder,
 } from "./helper/adminapicall";
 
-const ManageOrders = () => {
+const CancelledOrders = () => {
 	const [orders, setOrders] = useState([]);
-
-	const { user, token } = isAuthenticated();
-	var or;
-	var scolor;
 	const td = new Date();
 	const tryd = td.toISOString().slice(0, 10);
 
 	const tdate = tryd.split("-").reverse().join("-"); //27-06-2021 -final
+
+	const { user, token } = isAuthenticated();
 
 	const preload = () => {
 		getAllOrders(user._id, token).then((data) => {
@@ -66,8 +64,7 @@ const ManageOrders = () => {
 								<div className="col-4">Order</div>
 								<div className="col-3">User Details</div>
 
-								<div className="col-1">Status</div>
-								<div className="col-2">Action</div>
+								<div className="col-3">Status</div>
 							</div>
 						</div>
 						<div className="card-body">
@@ -77,12 +74,11 @@ const ManageOrders = () => {
 										orders.reverse().map((order, index) => {
 											var d = order.createdAt.slice(0, 10);
 											var nd = d.split("-").reverse().join("-");
-
-											// or = order.status;
+											console.log(nd);
 
 											return (
 												<span key={index}>
-													{nd === tdate ? (
+													{nd === tdate && order.status === "Cancelled" ? (
 														<tr className=" row  " key={index}>
 															<td className="col-1 text-left align-middle">
 																{index + 1}
@@ -107,63 +103,10 @@ const ManageOrders = () => {
 																<span>{order.deliveryTime}</span>
 															</td>
 
-															<td className="col-1 text-white">
-																{(order.status == "Cancelled" ||
-																	order.status == "Declined") &&
-																	(scolor = "red")}
-																{order.status == "Processing" &&
-																	(scolor = "#FBBF24")}
-
-																{order.status == "Confirmed" &&
-																	(scolor = "#2DD4BF")}
-																<p
-																	className=" text-left align-middle "
-																	style={{ backgroundColor: `${scolor}` }}
-																>
+															<td className="col-3">
+																<p className=" text-left align-middle">
 																	{order.status}
 																</p>
-															</td>
-															<td className="col-1">
-																<button
-																	className="btn"
-																	onClick={() => {
-																		confirmOrder(order._id);
-																	}}
-																>
-																	<span>
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			width="26"
-																			height="26"
-																			fill="green"
-																			className="bi bi-check-lg"
-																			viewBox="0 0 16 16"
-																		>
-																			<path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z" />
-																		</svg>
-																	</span>
-																</button>
-															</td>
-															<td className="col-1">
-																<button
-																	className="btn"
-																	onClick={() => {
-																		declineOrder(order._id);
-																	}}
-																>
-																	<span>
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			width="26"
-																			height="26"
-																			fill="red"
-																			className="bi bi-x-lg"
-																			viewBox="0 0 16 16"
-																		>
-																			<path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
-																		</svg>
-																	</span>
-																</button>
 															</td>
 														</tr>
 													) : null}
@@ -180,4 +123,4 @@ const ManageOrders = () => {
 	);
 };
 
-export default ManageOrders;
+export default CancelledOrders;
