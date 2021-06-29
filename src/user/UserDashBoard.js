@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import reactDom from "react-dom";
 import { getAllOrders } from "../admin/helper/adminapicall";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
@@ -8,6 +9,7 @@ import { cancelOrderByUser } from "./helper/userapicalls";
 const UserDashBoard = () => {
 	const { user, token } = isAuthenticated();
 	const [orders, setOrders] = useState([]);
+	const [displayButton, setDisplayBtn] = useState(false);
 
 	const preload = () => {
 		getAllOrders(user._id, token).then((data) => {
@@ -16,7 +18,9 @@ const UserDashBoard = () => {
 				console.log(data.error);
 			} else {
 				console.log(data);
-				setOrders(data.filter((order) => order.user._id === user._id));
+				setOrders(
+					data.filter((order) => order.user._id === user._id).reverse()
+				);
 			}
 		});
 	};
@@ -29,6 +33,10 @@ const UserDashBoard = () => {
 			}
 		});
 	};
+	const td = new Date();
+	const tryd = td.toISOString().slice(0, 10);
+
+	const tdate = tryd.split("-").reverse().join("-");
 	var scolor;
 	const setcolor = (str) => {
 		if (str == "Declined") {
@@ -41,6 +49,11 @@ const UserDashBoard = () => {
 			scolor = "#F59E0B";
 		}
 	};
+
+	const myfun = () => {
+		setDisplayBtn(true);
+	};
+	setTimeout(myfun, 10000);
 
 	useEffect(() => {
 		preload();
@@ -71,8 +84,9 @@ const UserDashBoard = () => {
 							<table className="list-group list-group-flush text-center fw-bold table table-striped table-bordered">
 								<tbody>
 									{orders &&
-										orders.reverse().map((order, index) => {
+										orders.map((order, index) => {
 											var d = order.createdAt.slice(0, 10);
+											var nd = d.split("-").reverse().join("-");
 
 											return (
 												<tr className=" row " key={index}>
@@ -82,7 +96,7 @@ const UserDashBoard = () => {
 														</p>
 													</td>
 													<td className="col-2">
-														<p className=" text-left  align-middle">{d}</p>
+														<p className=" text-left  align-middle">{nd}</p>
 													</td>
 													<td className="col-5">
 														<div>
@@ -121,14 +135,33 @@ const UserDashBoard = () => {
 														</p>
 													</td>
 													<td className="col-2">
-														<button
-															className="btn btn-danger rounded-2 fw-bold text-white"
-															onClick={() => {
-																cancelOrder(order._id);
-															}}
-														>
-															Cancel Order
-														</button>
+														<div className="d-flex justify-content-around">
+															{displayButton === false && tdate == nd ? (
+																<button
+																	className="btn btn-danger rounded-2 fw-bold text-white"
+																	onClick={() => {
+																		cancelOrder(order._id);
+																	}}
+																>
+																	Cancel
+																</button>
+															) : order.status === "Confirmed" &&
+															  tdate == nd ? (
+																<p>Order cannot be cancelled</p>
+															) : order.status === "Processing" ? (
+																<p>Yet to be Confirmed</p>
+															) : null}
+															{order.status == "Confirmed" && tdate == nd && (
+																<button
+																	className=" btn btn-danger rounded-2 fw-bold text-white"
+																	onClick={() => {
+																		cancelOrder(order._id);
+																	}}
+																>
+																	Pay
+																</button>
+															)}
+														</div>
 													</td>
 												</tr>
 											);

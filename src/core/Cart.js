@@ -18,7 +18,8 @@ const Cart = () => {
 	const tokenId = isAuthenticated() && isAuthenticated().token;
 	const userId = isAuthenticated() && isAuthenticated().user._id;
 	const [redirect, setRedirect] = useState(false);
-
+	const [Dredirect, setDRedirect] = useState(false);
+	var msg;
 	const makepayment = (token) => {
 		const price = cartPriceTotal;
 
@@ -56,6 +57,29 @@ const Cart = () => {
 				});
 			})
 			.catch((err) => console.log(err));
+	};
+	const createOrderByUser = () => {
+		const price = cartPriceTotal;
+		const orderData = {
+			products: products,
+			transaction_id: tokenId,
+			amount: price,
+			address: address,
+			deliveryTime: time,
+		};
+
+		createOrder(userId, tokenId, orderData);
+		alert("You will get a MAIL after the order is Confirmed");
+		cartEmpty(() => {
+			console.log("cart empty");
+			setDRedirect(true);
+			// setRedirect(true);
+		});
+	};
+	const getARedirectDashboard = (Dredirect) => {
+		if (Dredirect) {
+			return <Redirect to="/user/dashboard" />;
+		}
 	};
 
 	const getARedirect = (redirect) => {
@@ -127,12 +151,12 @@ const Cart = () => {
 		(acc, item) => acc + item.price * item.quantity,
 		0
 	);
-	const cartTotals = () => {
+	const cartTotals = (str) => {
 		return (
 			<div className="row">
 				<div className="col-md-6 offset-sm-3 text-left">
 					<div className="alert alert-danger fw-bold text-center fs-4">
-						Cart Empty
+						{str}
 					</div>
 				</div>
 			</div>
@@ -339,6 +363,7 @@ const Cart = () => {
 										/>
 									</div>
 								)}
+								<button onClick={createOrderByUser}>Confirm Order</button>
 							</form>
 						</div>
 					</div>
@@ -352,9 +377,11 @@ const Cart = () => {
 	return (
 		<Base>
 			{getARedirect(redirect)}
+			{getARedirectDashboard(Dredirect)}
 			<div style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}>
 				{products && products.length > 0 ? loadAllProducts(products) : null}
-				{cartCountTotal === 0 && cartTotals()}
+				{cartCountTotal === 0 && cartTotals("Cart Empty")}
+
 				<div
 					className="container-fluid"
 					style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
