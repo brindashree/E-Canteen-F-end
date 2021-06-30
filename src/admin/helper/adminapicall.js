@@ -243,3 +243,20 @@ export const updateDeclineOrder = (orderId, userId, token) => {
 		})
 		.catch((err) => console.log(err));
 };
+export const updateRefundStatus = (orderId, userId, token) => {
+	///order/:orderId/status/refundapprove/success/:userId
+	return fetch(
+		`${API}/order/${orderId}/status/refundapprove/success/${userId}`,
+		{
+			method: "PUT",
+			headers: {
+				Accept: "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	)
+		.then((response) => {
+			return response.json();
+		})
+		.catch((err) => console.log(err));
+};

@@ -2,14 +2,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import {
-	getAllOrders,
-	updateConfirmOrder,
-	updateDeclineOrder,
-} from "./helper/adminapicall";
+import { getAllOrders, updateRefundStatus } from "./helper/adminapicall";
+import emailjs from "emailjs-com";
 
 const CancelledOrders = () => {
 	const [orders, setOrders] = useState([]);
+	const [approveBtn, setapproveBtn] = useState(true);
 	const td = new Date();
 	const tryd = td.toISOString().slice(0, 10);
 
@@ -22,12 +20,12 @@ const CancelledOrders = () => {
 			if (data.error) {
 				console.log(data.error);
 			} else {
-				setOrders(data);
+				setOrders(data.reverse());
 			}
 		});
 	};
-	const confirmOrder = (orderId) => {
-		updateConfirmOrder(orderId, user._id, token).then((data) => {
+	const RefundOrder = (orderId) => {
+		updateRefundStatus(orderId, user._id, token).then((data) => {
 			if (data.error) {
 				console.log(data.error);
 			} else {
@@ -35,15 +33,7 @@ const CancelledOrders = () => {
 			}
 		});
 	};
-	const declineOrder = (orderId) => {
-		updateDeclineOrder(orderId, user._id, token).then((data) => {
-			if (data.error) {
-				console.log(data.error);
-			} else {
-				preload();
-			}
-		});
-	};
+
 	var scolor;
 	const setcolor = (str) => {
 		if (str == "Declined") {
@@ -60,6 +50,38 @@ const CancelledOrders = () => {
 	useEffect(() => {
 		preload();
 	}, []);
+	let username;
+	let useremail;
+	let useramount;
+
+	const sendEmail = () => {
+		const mailData = {
+			subject: "Refund Initiated",
+			message:
+				"Your amount of Rs " +
+				useramount +
+				" will be refunded in 7 working days",
+			m_username: username,
+			m_useremail: useremail,
+		};
+		emailjs
+			.send(
+				"service_3owpw22",
+				"template_a21c4rb",
+				mailData,
+				"user_N1HQe4z1V8wJifQ44jyRb"
+			)
+			.then(
+				function (response) {
+					console.log("SUCCESS!", response.status, response.text);
+					setapproveBtn(false);
+				},
+				function (error) {
+					console.log("FAILED...", error);
+				}
+			);
+	};
+
 	return (
 		<Base>
 			<div
@@ -83,7 +105,7 @@ const CancelledOrders = () => {
 							<table className="list-group list-group-flush text-center fw-bold table table-striped table-bordered">
 								<tbody>
 									{orders &&
-										orders.reverse().map((order, index) => {
+										orders.map((order, index) => {
 											var d = order.createdAt.slice(0, 10);
 											var nd = d.split("-").reverse().join("-");
 											console.log(nd);
@@ -117,38 +139,63 @@ const CancelledOrders = () => {
 
 															<td className="col-1 d-flex justify-content-around text-white fw-bold">
 																{setcolor(order.status)}
-																<p
-																	className=" p-2 rounded-2"
-																	style={{ backgroundColor: `${scolor}` }}
-																>
-																	{order.status}
-																</p>
+																<div>
+																	<p
+																		className=" p-2 rounded-2"
+																		style={{ backgroundColor: `${scolor}` }}
+																	>
+																		{order.status}
+																	</p>
+																</div>
 															</td>
 															<td className="col-3  text-white fw-bold">
 																{setcolor(
 																	order.paid == true ? "Paid" : "Yet to Pay"
 																)}
 																<div className="d-flex justify-content-around ">
-																	<p
-																		className=" p-2 rounded-2"
-																		style={{ backgroundColor: `${scolor}` }}
-																	>
-																		{order.paid == true ? "Paid" : "Yet to Pay"}
-																	</p>
+																	<div>
+																		<p
+																			className=" p-2 rounded-2"
+																			style={{ backgroundColor: `${scolor}` }}
+																		>
+																			{order.paid == true
+																				? "Paid "
+																				: "Yet to Pay "}
+																			Rs.{order.amount}
+																		</p>
+																	</div>
 																	{order.paid == true && (
 																		<p className="text-dark">
-																			<svg
-																				xmlns="http://www.w3.org/2000/svg"
-																				width="26"
-																				height="26"
-																				fill="red"
-																				className="bi bi-tags-fill"
-																				viewBox="0 0 16 16"
-																			>
-																				<path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
-																				<path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043-7.457-7.457z" />
-																			</svg>
-																			Refund Requested
+																			<div>
+																				<svg
+																					xmlns="http://www.w3.org/2000/svg"
+																					width="26"
+																					height="26"
+																					fill="red"
+																					className="bi bi-tags-fill"
+																					viewBox="0 0 16 16"
+																				>
+																					<path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+																					<path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043-7.457-7.457z" />
+																				</svg>
+																				{!order.refundApproval
+																					? "Refund Requested"
+																					: "You have Approved Refund"}
+																			</div>
+																			{!order.refundApproval && (
+																				<button
+																					onClick={() => {
+																						username = order.user.name;
+																						useremail = order.user.email;
+																						useramount = order.amount;
+																						sendEmail();
+																						RefundOrder(order._id);
+																					}}
+																					className="btn btn-info text-dark fw-bold rounded-2"
+																				>
+																					Approve
+																				</button>
+																			)}
 																		</p>
 																	)}
 																</div>
