@@ -88,23 +88,7 @@ const UserDashBoard = () => {
 				}
 			);
 	};
-	const sendPaymentFailEmail = (mailData) => {
-		emailjs
-			.send(
-				"service_3owpw22",
-				"template_sc5g37d",
-				mailData,
-				"user_N1HQe4z1V8wJifQ44jyRb"
-			)
-			.then(
-				function (response) {
-					console.log("SUCCESS!", response.status, response.text);
-				},
-				function (error) {
-					console.log("FAILED...", error);
-				}
-			);
-	};
+
 	//stripe makepayment
 	const makepayment = (token) => {
 		const price = stripeprice;
@@ -131,14 +115,15 @@ const UserDashBoard = () => {
 				if (status == 200) {
 					setDisplayPayBtn(false);
 					paymentSuccess(orderId);
-					var str = "";
+					var str = "<b>Your Order Details :</b>";
 					m_orderdetails.products.map((prod) => {
 						return (str = str + prod.name + "(" + prod.quantity + ")" + " , ");
 					});
+					var x = str + "<br/><b>Total Amount :</b>Rs " + price;
 
 					const mailData = {
-						m_price: price,
-						m_order: str,
+						subject: "Your payment is successful and order is confirmed.",
+						message: x,
 						m_username: user.name,
 						m_useremail: user.email,
 					};
@@ -149,12 +134,13 @@ const UserDashBoard = () => {
 			.catch((err) => {
 				console.log(err);
 				const mailData = {
+					subject: "Your payment was Unsuccessful.",
 					message: "Payment Unsuccessful, try again later.",
 					m_username: user.name,
 					m_useremail: user.email,
 				};
 
-				sendPaymentFailEmail(mailData);
+				sendConfirmEmail(mailData);
 			});
 	};
 
