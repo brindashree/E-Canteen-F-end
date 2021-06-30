@@ -20,44 +20,44 @@ const Cart = () => {
 	const [redirect, setRedirect] = useState(false);
 	const [Dredirect, setDRedirect] = useState(false);
 	var msg;
-	const makepayment = (token) => {
-		const price = cartPriceTotal;
+	// const makepayment = (token) => {
+	// 	const price = cartPriceTotal;
 
-		const body = {
-			token,
-			products,
-			price,
-		};
-		const headers = {
-			"Content-Type": "application/json",
-		};
-		return fetch(`${API}stripepayment`, {
-			method: "POST",
-			headers,
-			body: JSON.stringify(body),
-		})
-			.then((response) => {
-				console.log(response);
-				const { status } = response;
-				console.log(status);
+	// 	const body = {
+	// 		token,
+	// 		products,
+	// 		price,
+	// 	};
+	// 	const headers = {
+	// 		"Content-Type": "application/json",
+	// 	};
+	// 	return fetch(`${API}stripepayment`, {
+	// 		method: "POST",
+	// 		headers,
+	// 		body: JSON.stringify(body),
+	// 	})
+	// 		.then((response) => {
+	// 			console.log(response);
+	// 			const { status } = response;
+	// 			console.log(status);
 
-				const orderData = {
-					products: products,
-					transaction_id: tokenId,
-					amount: price,
-					address: address,
-					deliveryTime: time,
-				};
+	// 			const orderData = {
+	// 				products: products,
+	// 				transaction_id: tokenId,
+	// 				amount: price,
+	// 				address: address,
+	// 				deliveryTime: time,
+	// 			};
 
-				createOrder(userId, tokenId, orderData);
+	// 			createOrder(userId, tokenId, orderData);
 
-				cartEmpty(() => {
-					setRedirect(true);
-					console.log("cart empty");
-				});
-			})
-			.catch((err) => console.log(err));
-	};
+	// 			cartEmpty(() => {
+	// 				setRedirect(true);
+	// 				console.log("cart empty");
+	// 			});
+	// 		})
+	// 		.catch((err) => console.log(err));
+	// };
 	const createOrderByUser = () => {
 		const price = cartPriceTotal;
 		const orderData = {
@@ -363,7 +363,14 @@ const Cart = () => {
 										/>
 									</div>
 								)}
-								<button onClick={createOrderByUser}>Confirm Order</button>
+								<div className="flexdiv">
+									<button
+										className="btn fw-bolder signinbtn mb-3"
+										onClick={createOrderByUser}
+									>
+										Confirm Order
+									</button>
+								</div>
 							</form>
 						</div>
 					</div>
@@ -389,19 +396,6 @@ const Cart = () => {
 					{loadingMessage()}
 					{errorMessage()}
 					{CheckoutForm()}
-				</div>
-				<div className="flexdiv">
-					<StripeCheckout
-						stripeKey="pk_test_51J0l2NSEF0BipjQa7iPcjblAs7zlU63MPXOm5t316PGUIDHGO82v6szbvYFw68Faa4kEkG07m8iu5ofDQEFOVvDE00WrEDw86C"
-						token={makepayment}
-						name="Relish Bay"
-						currency="INR"
-						amount={cartPriceTotal * 100}
-					>
-						<button className="btn fw-bolder signinbtn mb-3">
-							Pay with stripe
-						</button>
-					</StripeCheckout>
 				</div>
 			</div>
 		</Base>

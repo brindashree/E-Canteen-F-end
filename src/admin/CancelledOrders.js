@@ -48,15 +48,15 @@ const CancelledOrders = () => {
 	const setcolor = (str) => {
 		if (str == "Declined") {
 			scolor = "red";
-		} else if (str == "Processing") {
+		} else if (str == "Processing" || str == "Yet to Pay") {
 			scolor = "#FBBF24";
-		} else if (str == "Confirmed") {
+		} else if (str == "Confirmed" || str == "Paid") {
 			scolor = "#2DD4BF";
 		} else if (str == "Cancelled") {
 			scolor = "#F87171";
 		}
 	};
-
+	var c = 0;
 	useEffect(() => {
 		preload();
 	}, []);
@@ -73,10 +73,10 @@ const CancelledOrders = () => {
 							<div className=" row fw-bold fs-6 text-center">
 								<div className="col-1">Sl.No</div>
 								<div className="col-1">Date</div>
-								<div className="col-4">Order</div>
+								<div className="col-3">Order</div>
 								<div className="col-3">User Details</div>
-
-								<div className="col-3">Status</div>
+								<div className="col-1">Order Status</div>
+								<div className="col-3">Payment Status</div>
 							</div>
 						</div>
 						<div className="card-body">
@@ -93,12 +93,12 @@ const CancelledOrders = () => {
 													{nd === tdate && order.status === "Cancelled" ? (
 														<tr className=" row  " key={index}>
 															<td className="col-1 text-left align-middle">
-																{index + 1}
+																{(c = c + 1)}
 															</td>
 															<td className="col-1">
 																<p className=" text-left align-middle">{nd}</p>
 															</td>
-															<td className="col-4">
+															<td className="col-3">
 																<div>
 																	{order.products.map((prod, i) => {
 																		return (
@@ -115,7 +115,7 @@ const CancelledOrders = () => {
 																<span>{order.deliveryTime}</span>
 															</td>
 
-															<td className="col-3 d-flex justify-content-around text-white fw-bold">
+															<td className="col-1 d-flex justify-content-around text-white fw-bold">
 																{setcolor(order.status)}
 																<p
 																	className=" p-2 rounded-2"
@@ -123,6 +123,35 @@ const CancelledOrders = () => {
 																>
 																	{order.status}
 																</p>
+															</td>
+															<td className="col-3  text-white fw-bold">
+																{setcolor(
+																	order.paid == true ? "Paid" : "Yet to Pay"
+																)}
+																<div className="d-flex justify-content-around ">
+																	<p
+																		className=" p-2 rounded-2"
+																		style={{ backgroundColor: `${scolor}` }}
+																	>
+																		{order.paid == true ? "Paid" : "Yet to Pay"}
+																	</p>
+																	{order.paid == true && (
+																		<p className="text-dark">
+																			<svg
+																				xmlns="http://www.w3.org/2000/svg"
+																				width="26"
+																				height="26"
+																				fill="red"
+																				className="bi bi-tags-fill"
+																				viewBox="0 0 16 16"
+																			>
+																				<path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+																				<path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043-7.457-7.457z" />
+																			</svg>
+																			Refund Requested
+																		</p>
+																	)}
+																</div>
 															</td>
 														</tr>
 													) : null}

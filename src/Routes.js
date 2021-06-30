@@ -20,6 +20,7 @@ import UpdateUser from "./admin/UpdateUser";
 import ManageOrders from "./admin/ManageOrders";
 import AllOrders from "./admin/AllOrders";
 import CancelledOrders from "./admin/CancelledOrders";
+import TotalPay from "./core/TotalPay";
 
 const Routes = () => {
 	return (
@@ -28,6 +29,7 @@ const Routes = () => {
 				<Route path="/" exact component={Home} />
 				<Route path="/signup" exact component={Signup} />
 				<Route path="/signin" exact component={Signin} />
+				<Route path="/total" exact component={TotalPay} />
 				<Route
 					path="/categories/:id"
 					exact

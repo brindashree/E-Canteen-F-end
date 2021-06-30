@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import reactDom from "react-dom";
+import emailjs from "emailjs-com";
 import { getAllOrders } from "../admin/helper/adminapicall";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import { cancelOrderByUser } from "./helper/userapicalls";
+import { cancelOrderByUser, updatePaymentSuccess } from "./helper/userapicalls";
+import StripeCheckout from "react-stripe-checkout";
+import { API } from "../backend";
 
 const UserDashBoard = () => {
 	const { user, token } = isAuthenticated();
+
 	const [orders, setOrders] = useState([]);
 	const [displayButton, setDisplayBtn] = useState(false);
+	const [displayPayBtn, setDisplayPayBtn] = useState(true);
 
 	const preload = () => {
 		getAllOrders(user._id, token).then((data) => {
-			console.log(data);
 			if (data.error) {
 				console.log(data.error);
 			} else {
-				console.log(data);
 				setOrders(
 					data.filter((order) => order.user._id === user._id).reverse()
 				);
@@ -35,7 +37,9 @@ const UserDashBoard = () => {
 	};
 	const td = new Date();
 	const tryd = td.toISOString().slice(0, 10);
-
+	let stripeprice;
+	let id;
+	let m_orderdetails;
 	const tdate = tryd.split("-").reverse().join("-");
 	var scolor;
 	const setcolor = (str) => {
@@ -58,6 +62,101 @@ const UserDashBoard = () => {
 	useEffect(() => {
 		preload();
 	}, []);
+	const paymentSuccess = (orderId) => {
+		updatePaymentSuccess(orderId, user._id, token).then((data) => {
+			if (data.error) {
+				console.log(data.error);
+			} else {
+				preload();
+			}
+		});
+	};
+	const sendConfirmEmail = (mailData) => {
+		emailjs
+			.send(
+				"service_3owpw22",
+				"template_a21c4rb",
+				mailData,
+				"user_N1HQe4z1V8wJifQ44jyRb"
+			)
+			.then(
+				function (response) {
+					console.log("SUCCESS!", response.status, response.text);
+				},
+				function (error) {
+					console.log("FAILED...", error);
+				}
+			);
+	};
+	const sendPaymentFailEmail = (mailData) => {
+		emailjs
+			.send(
+				"service_3owpw22",
+				"template_sc5g37d",
+				mailData,
+				"user_N1HQe4z1V8wJifQ44jyRb"
+			)
+			.then(
+				function (response) {
+					console.log("SUCCESS!", response.status, response.text);
+				},
+				function (error) {
+					console.log("FAILED...", error);
+				}
+			);
+	};
+	//stripe makepayment
+	const makepayment = (token) => {
+		const price = stripeprice;
+		const orderId = id;
+
+		const body = {
+			token,
+
+			price,
+		};
+
+		const headers = {
+			"Content-Type": "application/json",
+		};
+		return fetch(`${API}stripepayment`, {
+			method: "POST",
+			headers,
+			body: JSON.stringify(body),
+		})
+			.then((response) => {
+				const { status } = response;
+				console.log("Payment Status : " + status);
+
+				if (status == 200) {
+					setDisplayPayBtn(false);
+					paymentSuccess(orderId);
+					var str = "";
+					m_orderdetails.products.map((prod) => {
+						return (str = str + prod.name + "(" + prod.quantity + ")" + " , ");
+					});
+
+					const mailData = {
+						m_price: price,
+						m_order: str,
+						m_username: user.name,
+						m_useremail: user.email,
+					};
+
+					sendConfirmEmail(mailData);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				const mailData = {
+					message: "Payment Unsuccessful, try again later.",
+					m_username: user.name,
+					m_useremail: user.email,
+				};
+
+				sendPaymentFailEmail(mailData);
+			});
+	};
 
 	return (
 		<Base>
@@ -151,16 +250,29 @@ const UserDashBoard = () => {
 															) : order.status === "Processing" ? (
 																<p>Yet to be Confirmed</p>
 															) : null}
-															{order.status == "Confirmed" && tdate == nd && (
-																<button
-																	className=" btn btn-danger rounded-2 fw-bold text-white"
-																	onClick={() => {
-																		cancelOrder(order._id);
-																	}}
-																>
-																	Pay
-																</button>
-															)}
+															{order.status == "Confirmed" &&
+																order.paid == false &&
+																tdate == nd &&
+																displayPayBtn == true && (
+																	<StripeCheckout
+																		stripeKey="pk_test_51J0l2NSEF0BipjQawl7LIz1ikT4AlGXdNSZRwa1OkLNKmteI5fziHCBfBjyhhMZtxZ9rjys9mQtcmWMDosQPzNth00nTqeYbgs"
+																		token={makepayment}
+																		name="Relish Bay"
+																		currency="INR"
+																		amount={order.amount * 100}
+																	>
+																		<button
+																			onClick={() => {
+																				stripeprice = order.amount;
+																				id = order._id;
+																				m_orderdetails = order;
+																			}}
+																			className=" btn btn-danger rounded-2 fw-bold text-white"
+																		>
+																			Pay
+																		</button>
+																	</StripeCheckout>
+																)}
 														</div>
 													</td>
 												</tr>
