@@ -61,13 +61,7 @@ body {
 	background-color: var(--categorybtnbg);
 	display: inline-flex;
 }
-.catlink {
-	color: var(--logo);
-	font-weight: 500;
-}
-.catlink:hover {
-	color: #ffffff;
-}
+
 .categorypanel {
 	height: 3rem;
 }
@@ -290,6 +284,7 @@ Menu
 		grid-template-columns: 225px 1fr;
 		gap: 0 1.25rem;
 		max-width: 40rem;
+		min-width: 40rem;
 	}
 	.photo {
 		height: 175px;
@@ -307,4 +302,38 @@ Menu
 	.photo {
 		height: 200px;
 	}
+}
+
+/* category panel */
+
+.scroller {
+	background-color: var(--categorybtnbg);
+	overflow: auto;
+	white-space: nowrap;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.scroller::-webkit-scrollbar {
+	display: none;
+}
+.scroller a {
+	display: inline-block;
+	color: black;
+	text-align: center;
+	padding: 10px;
+	text-decoration: none;
+	margin-left: 10px;
+	margin-right: 10px;
+	font-weight: 900;
+}
+.catlink {
+	/* color: var(--logo);
+	font-weight: 500; */
+	text-decoration: none;
+	background-color: var(--card-detailsbg);
+	padding: 0.4rem;
+	border-radius: 10px;
+}
+.catlink:hover {
+	color: var(--categorybtnbg);
 }
