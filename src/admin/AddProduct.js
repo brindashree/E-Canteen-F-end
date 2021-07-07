@@ -99,7 +99,7 @@ const AddProduct = () => {
 		});
 	};
 	const goBack = () => (
-		<div className="mt-5">
+		<div className="px-3 py-3">
 			<Link className="btn btn-sm  mb-3" to="/admin/dashboard">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +187,10 @@ const AddProduct = () => {
 	);
 	return (
 		<Base>
-			<div className="container-fluid col-10" style={{ minHeight: "65vh" }}>
+			<div
+				className="container-fluid"
+				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
+			>
 				{goBack()}
 				<div className="row">
 					<div className="col-md-8 offset-md-2">

@@ -33,7 +33,7 @@ const ManageCategories = () => {
 		});
 	};
 	const goBack = () => (
-		<div className="mt-5">
+		<div className="py-3 px-3">
 			<Link className="btn btn-sm  mb-3" to="/admin/dashboard">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +51,7 @@ const ManageCategories = () => {
 
 	return (
 		<Base>
-			<div className="container-fluid col-10">
+			<div className="container-fluid" style={{ backgroundColor: " #fffbeb" }}>
 				{goBack()}
 				<div className="row d-flex justify-content-center">
 					<div className=" card adminmanagecard col-xl-6 col-12 mb-5">

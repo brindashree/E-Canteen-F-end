@@ -70,7 +70,7 @@ const AddCategory = () => {
 					value={name}
 					autoFocus
 					required
-					placeholder="For Ex. Summer"
+					placeholder="For Ex. Snacks"
 				/>
 				<div className="flexdiv">
 					<button
@@ -86,7 +86,10 @@ const AddCategory = () => {
 
 	return (
 		<Base className="container bg-info p-4">
-			<div className="row bg-white rounded " style={{ minHeight: "65vh" }}>
+			<div
+				className="row rounded "
+				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
+			>
 				<div className="col-md-8 offset-md-2">
 					{goBack()}
 					{successMessage()}

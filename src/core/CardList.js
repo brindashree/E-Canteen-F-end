@@ -21,8 +21,15 @@ const CardList = ({ match }) => {
 		<Base>
 			<CategoryPanel />
 
-			<div style={{ backgroundColor: " #fffbeb" }}>
+			<div style={{ backgroundColor: " #fffbeb", minHeight: "65vh" }}>
 				<section className="menu section">
+					{products.length == 0 && (
+						<div className="signin card flexdiv text-center">
+							<div className="card-header fw-bold fs-5">
+								No available products in this category
+							</div>
+						</div>
+					)}
 					<div className="section-center">
 						{products.length > 0 &&
 							products.map((product) => {
