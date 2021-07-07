@@ -76,46 +76,44 @@ const Signin = () => {
 
 	const signInForm = () => {
 		return (
-			<div className="d-flex justify-content-center">
-				<div className="signin card col-6 mt-5">
+			<div className=" d-flex justify-content-center">
+				<div className="signin card col-11 col-xl-6 mt-5">
 					<div className="card-header">
 						<h2 className="text-center fw-bolder">Sign In</h2>
 					</div>
-					<div className="row">
-						<div className="col-md-6 offset-sm-3 text-left">
-							<form>
-								<div className="input-group mb-3 mt-3">
-									<span className="input-group-text fw-bolder fs-5">Email</span>
-									<input
-										value={email}
-										onChange={handleChange("email")}
-										className="form-control fw-bolder fs-5"
-										type="email"
-									/>
-								</div>
+					<div className="card-body">
+						<form>
+							<div className="input-group mb-3 mt-3">
+								<span className="input-group-text fw-bolder">Email</span>
+								<input
+									value={email}
+									onChange={handleChange("email")}
+									className="form-control fw-bolder"
+									type="email"
+									required
+								/>
+							</div>
 
-								<div className="input-group mb-3">
-									<span className="input-group-text fw-bolder fs-5">
-										Password
-									</span>
-									<input
-										value={password}
-										onChange={handleChange("password")}
-										className="form-control fw-bolder fs-5"
-										type="password"
-									/>
-								</div>
+							<div className="input-group mb-3">
+								<span className="input-group-text fw-bolder">Password</span>
+								<input
+									value={password}
+									onChange={handleChange("password")}
+									className="form-control fw-bolder"
+									type="password"
+									required
+								/>
+							</div>
 
-								<div className="flexdiv">
-									<button
-										onClick={onSubmit}
-										className="btn fw-bolder signinbtn mb-3"
-									>
-										Sign In
-									</button>
-								</div>
-							</form>
-						</div>
+							<div className="flexdiv">
+								<button
+									onClick={onSubmit}
+									className="btn fw-bold signinbtn mb-3"
+								>
+									Sign In
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -124,12 +122,14 @@ const Signin = () => {
 
 	return (
 		<Base>
-			<div className="container-fluid" style={{ minHeight: "65vh" }}>
+			<div
+				className="container-fluid"
+				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
+			>
 				{loadingMessage()}
 				{errorMessage()}
 				{signInForm()}
 				{performRedirect()}
-				<p className=" text-center">{JSON.stringify(values)}</p>
 			</div>
 		</Base>
 	);

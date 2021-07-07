@@ -23,112 +23,108 @@ const currentTab = (history, path) => {
 
 const Menu = ({ history }) => {
 	return (
-		<div>
-			<div>
-				<header className="header">
-					<Link className="logo ps-5 fw-bolder" to="/">
-						RelishBay
+		<header className="header">
+			<Link className="logo ps-5 fw-bolder" to="/">
+				RelishBay
+			</Link>
+			<input className="menu-btn" type="checkbox" id="menu-btn" />
+			<label className="menu-icon" htmlFor="menu-btn">
+				<span className="navicon"></span>
+			</label>
+			<ul className="menu">
+				<li>
+					<Link
+						className="link link-theme link-arrow "
+						aria-current="page"
+						to="/"
+						style={currentTab(history, "/")}
+					>
+						Home
 					</Link>
-					<input className="menu-btn" type="checkbox" id="menu-btn" />
-					<label className="menu-icon" htmlFor="menu-btn">
-						<span className="navicon"></span>
-					</label>
-					<ul className="menu">
-						<li>
-							<Link
-								className="link link-theme link-arrow "
-								aria-current="page"
-								to="/"
-								style={currentTab(history, "/")}
-							>
-								Home
-							</Link>
-						</li>
+				</li>
 
-						{isAuthenticated() &&
-							(isAuthenticated().user.role === 0 ||
-								isAuthenticated().user.role === 1) && (
-								<Fragment>
-									<li>
-										<Link
-											style={currentTab(history, "/cart")}
-											className="link link-theme link-arrow "
-											to="/cart"
-										>
-											Cart
-										</Link>
-									</li>
-									<li>
-										<Link
-											style={currentTab(history, "/user/dashboard")}
-											className="link link-theme link-arrow "
-											to="/user/dashboard"
-										>
-											U.Dashboard
-										</Link>
-									</li>
-								</Fragment>
-							)}
-						{isAuthenticated() && isAuthenticated().user.role === 2 && (
+				{isAuthenticated() &&
+					(isAuthenticated().user.role === 0 ||
+						isAuthenticated().user.role === 1) && (
+						<Fragment>
 							<li>
 								<Link
-									style={currentTab(history, "/admin/dashboard")}
-									className="link link-theme link-arrow"
-									to="/admin/dashboard"
+									style={currentTab(history, "/cart")}
+									className="link link-theme link-arrow "
+									to="/cart"
 								>
-									A.Dashboard
+									Cart
 								</Link>
 							</li>
-						)}
-
-						{!isAuthenticated() && (
-							<Fragment>
-								<li>
-									<Link
-										style={currentTab(history, "/signin")}
-										className="link link-theme link-arrow"
-										to="/signin"
-									>
-										Sign In
-									</Link>
-								</li>
-								<li>
-									<Link
-										style={currentTab(history, "/signup")}
-										className="link link-theme link-arrow"
-										to="/signup"
-									>
-										Signup
-									</Link>
-								</li>
-							</Fragment>
-						)}
-						{isAuthenticated() && (
 							<li>
-								<span
-									className="link link-theme link-arrow text-white"
-									style={{
-										backgroundColor: "#ffc857",
-										color: "#ffffff",
-										padding: "7px",
-										borderRadius: "7px",
-										marginTop: "10px",
-										marginLeft: "15px",
-									}}
-									onClick={() => {
-										signout(() => {
-											history.push("/");
-										});
-									}}
+								<Link
+									style={currentTab(history, "/user/dashboard")}
+									className="link link-theme link-arrow "
+									to="/user/dashboard"
 								>
-									Signout
-								</span>
+									U.Dashboard
+								</Link>
 							</li>
-						)}
-					</ul>
-				</header>
-			</div>
-		</div>
+						</Fragment>
+					)}
+				{isAuthenticated() && isAuthenticated().user.role === 2 && (
+					<li>
+						<Link
+							style={currentTab(history, "/admin/dashboard")}
+							className="link link-theme link-arrow"
+							to="/admin/dashboard"
+						>
+							A.Dashboard
+						</Link>
+					</li>
+				)}
+
+				{!isAuthenticated() && (
+					<Fragment>
+						<li>
+							<Link
+								style={currentTab(history, "/signin")}
+								className="link link-theme link-arrow"
+								to="/signin"
+							>
+								Sign In
+							</Link>
+						</li>
+						<li>
+							<Link
+								style={currentTab(history, "/signup")}
+								className="link link-theme link-arrow"
+								to="/signup"
+							>
+								Signup
+							</Link>
+						</li>
+					</Fragment>
+				)}
+				{isAuthenticated() && (
+					<li>
+						<span
+							className="link link-theme link-arrow text-black"
+							style={{
+								backgroundColor: "#ffc857",
+
+								padding: "7px",
+								borderRadius: "7px",
+								marginTop: "10px",
+								marginLeft: "15px",
+							}}
+							onClick={() => {
+								signout(() => {
+									history.push("/");
+								});
+							}}
+						>
+							Signout
+						</span>
+					</li>
+				)}
+			</ul>
+		</header>
 	);
 };
 

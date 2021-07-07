@@ -20,44 +20,7 @@ const Cart = () => {
 	const [redirect, setRedirect] = useState(false);
 	const [Dredirect, setDRedirect] = useState(false);
 	var msg;
-	// const makepayment = (token) => {
-	// 	const price = cartPriceTotal;
 
-	// 	const body = {
-	// 		token,
-	// 		products,
-	// 		price,
-	// 	};
-	// 	const headers = {
-	// 		"Content-Type": "application/json",
-	// 	};
-	// 	return fetch(`${API}stripepayment`, {
-	// 		method: "POST",
-	// 		headers,
-	// 		body: JSON.stringify(body),
-	// 	})
-	// 		.then((response) => {
-	// 			console.log(response);
-	// 			const { status } = response;
-	// 			console.log(status);
-
-	// 			const orderData = {
-	// 				products: products,
-	// 				transaction_id: tokenId,
-	// 				amount: price,
-	// 				address: address,
-	// 				deliveryTime: time,
-	// 			};
-
-	// 			createOrder(userId, tokenId, orderData);
-
-	// 			cartEmpty(() => {
-	// 				setRedirect(true);
-	// 				console.log("cart empty");
-	// 			});
-	// 		})
-	// 		.catch((err) => console.log(err));
-	// };
 	const createOrderByUser = () => {
 		const price = cartPriceTotal;
 		const orderData = {
@@ -67,14 +30,17 @@ const Cart = () => {
 			address: address,
 			deliveryTime: time,
 		};
-
-		createOrder(userId, tokenId, orderData);
-		alert("You will get a MAIL after the order is Confirmed");
-		cartEmpty(() => {
-			console.log("cart empty");
-			setDRedirect(true);
-			// setRedirect(true);
-		});
+		if (price > 0) {
+			createOrder(userId, tokenId, orderData);
+			alert("You will get a MAIL after the order is Confirmed");
+			cartEmpty(() => {
+				console.log("cart empty");
+				setDRedirect(true);
+				// setRedirect(true);
+			});
+		} else {
+			alert("Cannot place order");
+		}
 	};
 	const getARedirectDashboard = (Dredirect) => {
 		if (Dredirect) {
@@ -166,47 +132,47 @@ const Cart = () => {
 		return (
 			<div className="row justify-content-center">
 				<div
-					className="card col-xl-8 col-10 py-2 px-2 mx-8 my-2"
+					className="card col-xl-8 col-11 py-2 px-2 mx-8 my-2"
 					style={{ backgroundColor: "#0e7490", color: "white" }}
 				>
 					<div className="d-flex justify-content-around text-center">
-						<div className="col-4 fw-bolder fs-5">Name</div>
-						<div className="col-2 fw-bolder fs-5">Price</div>
-						<div className="col-2 fw-bolder fs-5">Quantity</div>
-						<div className="col-3 fw-bolder fs-5">Item total</div>
-						<div className="col-1 fw-bolder fs-5">Delete</div>
+						<div className="col-2 col-xl-4 fw-bolder">Name</div>
+						<div className="col-2 col-xl-2 fw-bolder">Price</div>
+						<div className="col-3 col-xl-2 fw-bolder">Quantity</div>
+						<div className="col-3 col-xl-3 fw-bolder">Item total</div>
+						<div className="col-2 col-xl-1 fw-bolder">Delete</div>
 					</div>
 				</div>
 				{products.map((product, index) => (
 					<div
-						className="card cartcard col-xl-8 col-10 py-2 px-2 mx-8 my-2"
+						className="card cartcard col-xl-8 col-11 py-2 px-2 mx-8 my-2"
 						key={index}
 					>
 						<div className="d-flex justify-content-around">
-							<div className="col-4 text-center">
-								<h5 className=" fw-bold mt-3 mb-2">{product.name}</h5>
+							<div className="col-2 col-xl-4 text-center">
+								<h6 className=" fw-bold mt-3 mb-2">{product.name}</h6>
 							</div>
-							<div className="col-2 text-center">
+							<div className="col-2 col-xl-2 text-center">
 								<h5 className="fw-bolder fs-6 mt-3 mb-2">{product.price}</h5>
 							</div>
-							<div className=" col-2 mt-2 mb-2">
+							<div className=" col-3 col-xl-2 mt-2 mb-2">
 								<div className="row">
-									<div className="col-4">
+									<div className="col-1 col-xl-4">
 										<button
-											className="px-3 incdecbtn"
+											className="px-1 incdecbtn"
 											onClick={() => decreaseQuantity(product._id)}
 										>
 											-
 										</button>
 									</div>
 
-									<div className="col-4 flexdiv">
-										<h5 className="fw-bolder fs-6 mt-2">{product.quantity}</h5>
+									<div className="col-1 col-xl-4 text-center">
+										<h6 className="fw-bolder mt-2">{product.quantity}</h6>
 									</div>
 
-									<div className="col-4">
+									<div className="col-1 col-xl-4">
 										<button
-											className="px-3 incdecbtn"
+											className="px-1 incdecbtn"
 											onClick={() => increaseQuantity(product._id)}
 										>
 											+
@@ -214,7 +180,7 @@ const Cart = () => {
 									</div>
 								</div>
 							</div>
-							<div className="col-3 d-flex justify-content-center">
+							<div className="col-3 col-xl-3 d-flex justify-content-center">
 								<h5 className="fw-bolder fs-6 mt-3 mb-2">
 									{Number.isInteger(product.quantity * product.price)
 										? product.quantity * product.price
@@ -222,7 +188,7 @@ const Cart = () => {
 								</h5>
 							</div>
 
-							<div className="col-1">
+							<div className="col-2 col-xl-1">
 								<div className="col-12">
 									<button
 										onClick={() => {
@@ -292,86 +258,91 @@ const Cart = () => {
 	const CheckoutForm = () => {
 		return (
 			<div className="d-flex justify-content-center">
-				<div className="signin card col-12 col-xl-6 mt-5">
+				<div className="signin card col-12 col-xl-6 mt-5 mb-3">
 					<div className="card-header">
 						<h2 className="text-center fw-bolder">Checkout</h2>
 					</div>
-					<div className="d-flex justify-content-around mt-3 mb-3 ">
-						<h5 className="fw-bolder">Total Items : {cartCountTotal} </h5>
-						<h5 className="fw-bolder">Total Price : {cartPriceTotal}</h5>
-					</div>
-					<div className="flexdiv">
-						<div className="col-4 mb-3">
-							<select
-								className="form-select btn btn-secondary"
-								aria-label="Default select example"
-							>
-								<option value="0">Cart Items</option>
-								{products &&
-									products.map((item, i) => {
-										return (
-											<option value={i} key={i}>
-												{item.name}
-											</option>
-										);
-									})}
-							</select>
+					<div className="card-body">
+						<div className="d-flex justify-content-around mt-3 mb-3 ">
+							<h6 className="fw-bolder">Total Items : {cartCountTotal} </h6>
+							<h6 className="fw-bolder">
+								Total Price : Rs.
+								<span className=" fw-bolder ">{cartPriceTotal}</span>{" "}
+							</h6>
 						</div>
-					</div>
+						<div className="flexdiv">
+							<div className="col-4 mb-3">
+								<select
+									className="form-select btn btn-secondary"
+									aria-label="Default select example"
+								>
+									<option value="0">Cart Items</option>
+									{products &&
+										products.map((item, i) => {
+											return (
+												<option value={i} key={i}>
+													{item.name}
+												</option>
+											);
+										})}
+								</select>
+							</div>
+						</div>
 
-					<div className="row">
-						<div className="col-md-6 offset-sm-3 text-left px-2">
-							<form>
-								<div className="input-group mb-3">
-									<span className="input-group-text fw-bold fs-6">Email</span>
-									<input
-										value={useremail}
-										className="form-control fw-bold fs-6"
-										type="email"
-										disabled
-									/>
-								</div>
-
-								<div className="input-group mb-3">
-									<span className="input-group-text fw-bold fs-6">Phone</span>
-									<input
-										value={phone}
-										onChange={handleChange("phone")}
-										className="form-control fw-bold fs-6"
-										type="number"
-									/>
-								</div>
-								<div className="input-group mb-3">
-									<span className="input-group-text fw-bold fs-6">Timings</span>
-									<input
-										value={time}
-										onChange={handleChange("time")}
-										className="form-control fw-bold fs-6"
-										type="time"
-									/>
-								</div>
-								{isAuthenticated() && isAuthenticated().user.role === 1 && (
+						<div className="row">
+							<div className="col-md-6 offset-sm-3 text-left px-2">
+								<form>
 									<div className="input-group mb-3">
-										<span className="input-group-text fw-bold fs-6">
-											Address
-										</span>
-										<textarea
-											value={address}
-											onChange={handleChange("address")}
-											className="form-control fw-bold fs-6"
-											type="text"
+										<span className="input-group-text fw-bold ">Email</span>
+										<input
+											value={useremail}
+											className="form-control fw-bold"
+											type="email"
+											disabled
 										/>
 									</div>
-								)}
-								<div className="flexdiv">
-									<button
-										className="btn fw-bolder signinbtn mb-3"
-										onClick={createOrderByUser}
-									>
-										Confirm Order
-									</button>
-								</div>
-							</form>
+
+									<div className="input-group mb-3">
+										<span className="input-group-text fw-bold ">Phone</span>
+										<input
+											value={phone}
+											onChange={handleChange("phone")}
+											className="form-control fw-bold"
+											type="number"
+											required={true}
+										/>
+									</div>
+									<div className="input-group mb-3">
+										<span className="input-group-text fw-bold">Timings</span>
+										<input
+											value={time}
+											onChange={handleChange("time")}
+											className="form-control fw-bold"
+											type="time"
+											required
+										/>
+									</div>
+									{isAuthenticated() && isAuthenticated().user.role === 1 && (
+										<div className="input-group mb-3">
+											<span className="input-group-text fw-bold ">Address</span>
+											<textarea
+												value={address}
+												onChange={handleChange("address")}
+												className="form-control fw-bold"
+												type="text"
+											/>
+										</div>
+									)}
+									<div className="flexdiv">
+										<button
+											className="btn fw-bold signinbtn mb-3"
+											onClick={createOrderByUser}
+										>
+											Confirm Order
+										</button>
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -385,18 +356,16 @@ const Cart = () => {
 		<Base>
 			{getARedirect(redirect)}
 			{getARedirectDashboard(Dredirect)}
-			<div style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}>
+			<div
+				className="container-fluid"
+				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
+			>
 				{products && products.length > 0 ? loadAllProducts(products) : null}
 				{cartCountTotal === 0 && cartTotals("Cart Empty")}
 
-				<div
-					className="container-fluid"
-					style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
-				>
-					{loadingMessage()}
-					{errorMessage()}
-					{CheckoutForm()}
-				</div>
+				{loadingMessage()}
+				{errorMessage()}
+				{CheckoutForm()}
 			</div>
 		</Base>
 	);

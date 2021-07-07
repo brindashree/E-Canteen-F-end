@@ -2,15 +2,11 @@ import React from "react";
 
 import Menu from "./Menu.js";
 
-const Base = ({
-	title = "My title",
-	description = "My description",
-	classname = "bg-dark text-white p-4",
-	children,
-}) => {
+const Base = ({ children }) => {
 	return (
 		<div>
 			<Menu />
+
 			<div className="base">
 				<span>{children}</span>
 			</div>

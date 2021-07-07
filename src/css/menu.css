@@ -74,6 +74,10 @@
 	.main {
 		padding-top: 150px;
 	}
+	.link {
+		width: fit-content;
+		margin: auto;
+	}
 	/* .container {
 		width: 80%;
 	}
@@ -135,6 +139,8 @@
 		/* margin-left: 10%;
 		margin-right: 10%; */
 		padding: 20px 0;
+		border-bottom: solid;
+		border-bottom-color: #084c61;
 	}
 
 	.header ul {
@@ -159,7 +165,7 @@
 	}
 
 	.header .logo {
-		color: #ffd300;
+		color: #084c61;
 		display: block;
 		float: left;
 		font-size: 2em;

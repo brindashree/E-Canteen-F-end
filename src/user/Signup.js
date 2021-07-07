@@ -44,54 +44,53 @@ const Signup = () => {
 	const signUpForm = () => {
 		return (
 			<div className="d-flex justify-content-center ">
-				<div className="card signin col-6 mt-5">
+				<div className="card signin col-11 col-xl-6 mt-5">
 					<div className="card-header">
 						<h2 className="text-center fw-bolder">Sign Up</h2>
 					</div>
-					<div className="row">
-						<div className="col-md-6 offset-sm-3 text-left">
-							<form>
-								<div className="input-group mb-3 mt-3">
-									<span className="input-group-text fw-bolder fs-5">Name</span>
-									<input
-										className="form-control fw-bolder fs-5"
-										onChange={handleChange("name")}
-										type="text"
-										value={name}
-									/>
-								</div>
+					<div className="card-body">
+						<form>
+							<div className="input-group mb-3 mt-3">
+								<span className="input-group-text fw-bolder">Name</span>
+								<input
+									className="form-control fw-bolder"
+									onChange={handleChange("name")}
+									type="text"
+									value={name}
+									required
+								/>
+							</div>
 
-								<div className="input-group mb-3 mt-3">
-									<span className="input-group-text fw-bolder fs-5">Email</span>
-									<input
-										className="form-control fw-bolder fs-5"
-										onChange={handleChange("email")}
-										value={email}
-										type="email"
-									/>
-								</div>
+							<div className="input-group mb-3 mt-3">
+								<span className="input-group-text fw-bolder ">Email</span>
+								<input
+									className="form-control fw-bolder"
+									onChange={handleChange("email")}
+									value={email}
+									type="email"
+									required
+								/>
+							</div>
 
-								<div className="input-group mb-3 mt-3">
-									<span className="input-group-text fw-bolder fs-5">
-										Password
-									</span>
-									<input
-										className="form-control fw-bolder fs-5"
-										onChange={handleChange("password")}
-										type="password"
-										value={password}
-									/>
-								</div>
-								<div className="flexdiv">
-									<button
-										onClick={onSubmit}
-										className="btn fw-bolder signinbtn mb-3"
-									>
-										Sign Up
-									</button>
-								</div>
-							</form>
-						</div>
+							<div className="input-group mb-3 mt-3">
+								<span className="input-group-text fw-bolder">Password</span>
+								<input
+									className="form-control fw-bolder"
+									onChange={handleChange("password")}
+									type="password"
+									value={password}
+									required
+								/>
+							</div>
+							<div className="flexdiv">
+								<button
+									onClick={onSubmit}
+									className="btn fw-bold signinbtn mb-3"
+								>
+									Sign Up
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -131,11 +130,13 @@ const Signup = () => {
 
 	return (
 		<Base>
-			<div className="container-fluid " style={{ minHeight: "65vh" }}>
+			<div
+				className="container-fluid "
+				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
+			>
 				{successMessage()}
 				{errorMessage()}
 				{signUpForm()}
-				<p className=" text-center">{JSON.stringify(values)}</p>
 			</div>
 		</Base>
 	);

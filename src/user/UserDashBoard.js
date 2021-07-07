@@ -150,13 +150,13 @@ const UserDashBoard = () => {
 				className="row"
 				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
 			>
-				<div className="col-12">
-					<div className="card mx-5 my-5">
+				<div className="col-12 col-xl-12">
+					<div className="signin card mx-5 my-3">
 						<div className="card-header fw-bold fs-3 text-center">
 							Transaction history
 						</div>
 						<div className="card-header">
-							<div className=" row fw-bold fs-6 text-center">
+							<div className=" row col-12 fw-bold text-center">
 								<div className="col-1">Sl.No</div>
 								<div className="col-2">Date</div>
 								<div className="col-5">Order</div>
