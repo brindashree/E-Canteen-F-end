@@ -2,14 +2,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import {
-	getAllOrders,
-	updateConfirmOrder,
-	updateDeclineOrder,
-} from "./helper/adminapicall";
+import { getAllOrders } from "./helper/adminapicall";
 
 const AllOrders = () => {
 	const [orders, setOrders] = useState([]);
+	const [sorders, setSorders] = useState(orders);
+	const [searchText, setsearchText] = useState("");
+	const [displayOrders, setdisOrders] = useState(true);
 	const td = new Date();
 	const tryd = td.toISOString().slice(0, 10);
 
@@ -42,12 +41,49 @@ const AllOrders = () => {
 	useEffect(() => {
 		preload();
 	}, []);
+	const handleOnSubmit = (e) => {
+		e.preventDefault();
+		if (searchText) {
+			searchOrder(searchText);
+			setsearchText("");
+		}
+	};
+
+	const handleOnChange = (e) => {
+		setsearchText(e.target.value);
+	};
+
+	const searchOrder = (searchText) => {
+		var newarr = orders.filter(
+			(order) =>
+				order.user.name.toLowerCase().includes(searchText.toLowerCase()) ||
+				order.status.toLowerCase().includes(searchText.toLowerCase())
+		);
+		console.log(newarr);
+		setSorders(newarr);
+		setdisOrders(false);
+	};
 	return (
 		<Base>
 			<div
 				className="row"
 				style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}
 			>
+				<div className="flexdiv">
+					<div className="card col-6 mt-2">
+						<form className="card-body" onSubmit={handleOnSubmit}>
+							<div className="input-group">
+								<span className="input-group-text fw-bolder">Search</span>
+								<input
+									className="form-control fw-bolder text-dark"
+									type="text"
+									value={searchText}
+									onChange={handleOnChange}
+								/>
+							</div>
+						</form>
+					</div>
+				</div>
 				<div className="col-12">
 					<div className="card mx-5 my-5">
 						<div className="card-header fw-bold fs-4 text-center">Orders</div>
@@ -64,8 +100,52 @@ const AllOrders = () => {
 						<div className="card-body">
 							<table className="list-group list-group-flush text-center fw-bold table table-striped table-bordered">
 								<tbody>
-									{orders &&
+									{displayOrders &&
+										orders &&
 										orders.reverse().map((order, index) => {
+											var d = order.createdAt.slice(0, 10);
+											var nd = d.split("-").reverse().join("-");
+
+											return (
+												<tr className=" row  " key={index}>
+													<td className="col-1 text-left align-middle">
+														{index + 1}
+													</td>
+													<td className="col-1">
+														<p className=" text-left align-middle">{nd}</p>
+													</td>
+													<td className="col-4">
+														<div>
+															{order.products.map((prod, i) => {
+																return (
+																	<span key={i}>
+																		{prod.name}({prod.quantity}),{" "}
+																	</span>
+																);
+															})}
+														</div>
+													</td>
+													<td className="col-3 d-flex justify-content-around">
+														<span>{order.user.name}</span>
+														<span>{order.address}</span>
+														<span>{order.deliveryTime}</span>
+													</td>
+
+													<td className="col-3 d-flex justify-content-around text-white fw-bold">
+														{setcolor(order.status)}
+														<p
+															className=" p-2 rounded-2"
+															style={{ backgroundColor: `${scolor}` }}
+														>
+															{order.status}
+														</p>
+													</td>
+												</tr>
+											);
+										})}
+
+									{sorders &&
+										sorders.reverse().map((order, index) => {
 											var d = order.createdAt.slice(0, 10);
 											var nd = d.split("-").reverse().join("-");
 

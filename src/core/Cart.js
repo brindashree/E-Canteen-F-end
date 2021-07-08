@@ -309,7 +309,7 @@ const Cart = () => {
 											onChange={handleChange("phone")}
 											className="form-control fw-bold"
 											type="number"
-											required={true}
+											required
 										/>
 									</div>
 									<div className="input-group mb-3">
