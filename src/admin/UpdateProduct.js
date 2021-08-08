@@ -196,21 +196,19 @@ const UpdateProduct = ({ match }) => {
 		</form>
 	);
 	return (
-		<Base
-			title="Add a product here!"
-			description="Welcome to product creation section"
-			className="container bg-info p-4"
-		>
-			<Link to="/admin/dashboard" className="btn btn-md btn-dark mb-3 ">
-				Admin Home
-			</Link>
-			<div className="row bg-dark text-white rounded">
-				<div className="col-md-8 offset-md-2">
-					<h1>
-						{successMessage()}
-						{errorMessage()}
-						{createProductForm()}
-					</h1>
+		<Base className="container bg-info p-4">
+			<div style={{ minHeight: "65vh", backgroundColor: " #fffbeb" }}>
+				<Link to="/admin/dashboard" className="btn btn-md btn-dark mb-3 ">
+					Admin Home
+				</Link>
+				<div className="row bg-dark text-white rounded">
+					<div className="col-md-8 offset-md-2">
+						<h1>
+							{successMessage()}
+							{errorMessage()}
+							{createProductForm()}
+						</h1>
+					</div>
 				</div>
 			</div>
 		</Base>

@@ -241,7 +241,7 @@ const UserDashBoard = () => {
 																tdate == nd &&
 																displayPayBtn == true && (
 																	<StripeCheckout
-																		stripeKey="pk_test_51J0l2NSEF0BipjQawl7LIz1ikT4AlGXdNSZRwa1OkLNKmteI5fziHCBfBjyhhMZtxZ9rjys9mQtcmWMDosQPzNth00nTqeYbgs"
+																		stripeKey="pk_test_51J0l2NSEF0BipjQaFWLuiW8UD6v2l2GxwI1BnNg6KS7RC4sjNFVx3ef3C2dHBkfFBOx5Ojca8j99mMMBnGxnqY1j00D13O2p4e"
 																		token={makepayment}
 																		name="Relish Bay"
 																		currency="INR"
